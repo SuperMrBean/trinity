@@ -7,7 +7,10 @@
           class="swiper-wrap"
           :options="swiperOptions"
         >
-          <swiper-slide>
+          <swiper-slide v-for="(item,index) in bannerList" :key="index">
+            <img :src="`http://www.boatng.cn:7002${item.path}`" class="swiper-img" alt="">
+          </swiper-slide>
+          <!-- <swiper-slide>
             <img src="@/assets/images/pic1.jpg" class="swiper-img" alt="">
           </swiper-slide>
           <swiper-slide>
@@ -15,26 +18,23 @@
           </swiper-slide>
           <swiper-slide>
             <img src="@/assets/images/pic1.jpg" class="swiper-img" alt="">
-          </swiper-slide>
-          <swiper-slide>
-            <img src="@/assets/images/pic1.jpg" class="swiper-img" alt="">
-          </swiper-slide>
+          </swiper-slide> -->
         </swiper>
       </client-only>
       <div class=nav>
         <div class="nav-left">
-          <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">首页</div>
-          <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">关于我们</div>
+          <div v-for="(item,index) in titleListLeft" :key="index" class="nav-item" @mouseenter="handleShowPop(true,item)" @mouseleave="handleShowPop(false,item)">{{item.name}}</div>
+          <!-- <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">关于我们</div>
           <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">什么让我们与众不同</div>
           <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">课程</div>
-          <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">员工</div>
+          <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">员工</div> -->
         </div>
         <div class="nav-logo"></div>
         <div class="nav-right">
-          <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">社区</div>
-          <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">招生部</div>
+          <div v-for="(item,index) in titleListRight" :key="index" class="nav-item" @mouseenter="handleShowPop(true,item)" @mouseleave="handleShowPop(false,item)">{{item.name}}</div>
+          <!-- <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">招生部</div>
           <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">联系我们</div>
-          <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">新闻</div>
+          <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">新闻</div> -->
         </div>
       </div>
       <div class="title">
@@ -43,22 +43,22 @@
         </span>
       </div>
       <transition name="fade">
-        <div @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)" class="pop" v-show="isShowPop">
+        <div @mouseenter="handleStayPop(true)" @mouseleave="handleStayPop(false)" class="pop" v-show="isShowPop">
           <div class="pop-main">
             <div class="pop-main-left">
-              <div class="pop-main-lfet__item">我们的使命</div>
-              <div class="pop-main-lfet__item">校长欢迎词</div>
+              <div v-for="(item,index) in popList" :key="index" class="pop-main-lfet__item" @mouseenter="handlePopTitle(item.name)">{{item.name}}</div>
+              <!-- <div class="pop-main-lfet__item">校长欢迎词</div>
               <div class="pop-main-lfet__item">文化</div>
               <div class="pop-main-lfet__item">国际教育</div>
               <div class="pop-main-lfet__item">参观学校</div>
               <div class="pop-main-lfet__item">学校时间表</div>
-              <div class="pop-main-lfet__item">校历</div>
+              <div class="pop-main-lfet__item">校历</div> -->
             </div>
             <div class="pop-main-mid">
               <img src="@/assets/images/banner.jpg" alt="" class="pop-main-mid--img">
             </div>
             <div class="pop-main-right">
-              <div class="pop-main-right--title">我们的使命</div>
+              <div class="pop-main-right--title">{{popTitle}}</div>
               <div class="pop-main-right--icon"></div>
             </div>
           </div>
@@ -71,12 +71,80 @@
       <div class="principle-line2">用圣心培育每一个孩子，让他们成为具有创造性，充满爱心和热情的学习者。</div>
     </div>
     <div class="video">
-
+      <div class="video-item">
+        <img class="video-item--img" src="@/assets/images/video.jpg" alt="">
+        <div class="video-item--title">
+          <span class="video-item--title__text">Our Chefs</span>
+        </div>
+        <div class="video-item__icon"></div>
+      </div>
+      <div class="video-item">
+        <img class="video-item--img" src="@/assets/images/video.jpg" alt="">
+        <div class="video-item--title">
+          <span class="video-item--title__text">Our Chefs</span>
+        </div>
+        <div class="video-item__icon"></div>
+      </div>
+      <div class="video-item">
+        <img class="video-item--img" src="@/assets/images/video.jpg" alt="">
+        <div class="video-item--title">
+          <span class="video-item--title__text">Our Chefs</span>
+        </div>
+        <div class="video-item__icon"></div>
+      </div>
+      <div class="video-item">
+        <img class="video-item--img" src="@/assets/images/video.jpg" alt="">
+        <div class="video-item--title">
+          <span class="video-item--title__text">Our Chefs</span>
+        </div>
+        <div class="video-item__icon"></div>
+      </div>
+      <div class="video-item">
+        <img class="video-item--img" src="@/assets/images/video.jpg" alt="">
+        <div class="video-item--title">
+          <span class="video-item--title__text">Our Chefs</span>
+        </div>
+        <div class="video-item__icon"></div>
+      </div>
+    </div>
+    <div class="introduction">
+      <div class="introduction-main">
+        <div class="introduction-main-left">
+          <div class="introduction-main-left__img"></div>
+          <div class="introduction-main-left__name">
+            <span class="introduction-main-left__name--text1">Elaine Whelen</span>
+            <br>
+            <span class="introduction-main-left__name--text2">Director of Education</span>
+          </div>
+        </div>
+        <div class="introduction-main-right">
+          <div class="introduction-main-right__text">Ms. Whelen是圣心国际幼稚园的创校校长。她有30多年国际教育的经验，是华南最知名的国际教育者之一。在担任广州裕达隆国际学校校长（2007-2014）和爱莎国际学校创校校长(2014-2017)之前，她是伦敦国际学校校长(2001-2005)和乌干达Kabira国际学校校长(2005-2007)。</div>
+          <div class="introduction-main-right__btn">更多 ></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="footer-item1">
+        <div>广州市天河区珠江新城花城大道663号</div>
+        <div class="footer-item1__text">T / +86(20)8558 3287</div>
+        <div>E / www.trinitygz.com</div>
+      </div>
+      <div class="footer-item2"></div>
+      <div class="footer-item3">
+        <div class="footer-item3--code"></div>
+        <span class="footer-item3--text">扫描二维码</span>
+        <br>
+        <span class="footer-item3--text">关注我们</span>
+      </div>
+    </div>
+    <div class="author">
+      <span class="author__text">粤ICP备05003387号 Powered by XOOPS!</span>
     </div>
   </div>
 </template>
 
 <script>
+import { getStatic,getTitle } from '@/utils/api'
 export default {
   data () {
     return {
@@ -92,11 +160,51 @@ export default {
         speed:800
       },
       isShowPop:false,
+      popList:[],
+      popTitle:'',
       timeout:null
     }
   },
+  async asyncData({ params }){
+    const {data:bannerList} = await getStatic({
+      type: 'banner'
+    })
+    const {data:videoList} = await getStatic({
+      type: 'video'
+    })
+    const {data:titleList} = await getTitle({
+      is_format:1
+    })
+    let _titleList = titleList.filter((item)=>{return item.is_deleted === 0})
+    let length = _titleList.length
+    let lengthLeft = Math.floor(length/2)
+    return {
+      bannerList,
+      videoList,
+      titleListLeft:_titleList.slice(0,lengthLeft),
+      titleListRight:_titleList.slice(lengthLeft,length)
+    }
+  },
   methods: {
-    handleShowPop(flag){
+    handleShowPop(flag,data){
+      if(this.timeout){
+        clearTimeout(this.timeout)
+      }
+      if(data.children.length === 0){
+        this.isShowPop = false
+        return 
+      }
+      this.popList = data.children
+      this.popTitle = data.children[0].name
+      if(flag){
+        this.isShowPop = flag
+      }else{
+        this.timeout = setTimeout(()=>{
+          this.isShowPop = flag
+        },2000)
+      }
+    },
+    handleStayPop(flag){
       if(this.timeout){
         clearTimeout(this.timeout)
       }
@@ -107,7 +215,12 @@ export default {
           this.isShowPop = flag
         },2000)
       }
+    },
+    handlePopTitle(title){
+      this.popTitle = title
     }
+  },
+  async mounted(){
   },
   components: {
   }
@@ -179,6 +292,7 @@ export default {
   justify-content: space-around;
   padding:0 20px;
   box-sizing: border-box;
+  font-size:0;
 }
 .nav-right{
   width:43%;
@@ -204,6 +318,7 @@ export default {
   line-height: 40px;
   color:#dcbb71;
   font-size:15px;
+  font-weight: 800;
   padding:0 10px;
   box-sizing: border-box;
   cursor: pointer;
@@ -253,6 +368,7 @@ export default {
 }
 .pop-main-lfet__item{
   color:#dcbb71;
+  font-weight: 800;
   font-size:14px;
   padding:8px 0;
 }
@@ -293,16 +409,188 @@ export default {
 }
 .principle-line1{
   font-size:18px;
+  font-weight: 800;
   color:#fff;
 }
 .principle-line2{
   font-size:14px;
+  font-weight: 800;
   color:#fff;
   margin-top:10px;
 }
 .video{
   width:100%;
-  height:400px;
+  height:360px;
   background:#fff;
+  padding-top:67px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+}
+.video-item{
+  position: relative;
+  width: 182px;
+  height:324px;
+  margin-right:20px;
+  box-shadow: 4px 4px 6px 0px #98a3b6;
+  border-radius: 4px;
+  font-size:0;
+}
+.video-item:last-child{
+  margin-right:0;
+}
+.video-item--img{
+  width:100%;
+  height:248px;
+  object-fit: contain;
+}
+.video-item--title{
+  width:100%;
+  height:76px;
+  background:#dcbb71;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.video-item--title__text{
+  font-size:20px;
+  color:#16305f;
+  font-weight: 800;
+}
+.video-item__icon{
+  position: absolute;
+  width:60px;
+  height:60px;
+  background:url('~assets/images/play.png');
+  background-size:100% 100%;
+  left:50%;
+  transform: translateX(-50%);
+  top:100px;
+}
+.introduction{
+  width:100%;
+  height:470px;
+  background:#16305f;
+  display: flex;
+  justify-content: center;
+}
+.introduction-main{
+  width:61%;
+  height:410px;
+  background:url('~assets/images/square.png');
+  background-size:100% 100%;
+  margin-top:50px;
+}
+.introduction-main-left{
+  display: inline-block;
+  margin-top:68px;
+  margin-left:63px;
+  width:180px;
+}
+.introduction-main-left__img{
+  width:180px;
+  height:180px;
+  background:url('~assets/images/director.jpg');
+  background-size:100% 100%;
+  border-radius: 100%;
+}
+.introduction-main-left__name{
+  text-align: center;
+}
+.introduction-main-left__name--text1{
+  display: inline-block;
+  margin-top:24px;
+  color:#fff;
+  font-size:18px;
+  font-weight: 800;
+}
+.introduction-main-left__name--text2{
+  display: inline-block;
+  margin-top:10px;
+  color:#fff;
+  font-size:12px;
+  font-weight: 800;
+}
+.introduction-main-right{
+  display: inline-block;
+  width:400px;
+  height:210px;
+  vertical-align: top;
+  margin-top:62px;
+  margin-left:84px;
+  padding-top:20px;
+  border-top:1px solid #dcbb71;
+
+}
+.introduction-main-right__text{
+  font-size:16px;
+  color:#fff;
+  line-height: 30px;
+  text-align: justify;
+}
+.introduction-main-right__btn{
+  display: inline-block;
+  font-size:16px;
+  padding:4px 18px;
+  border:1px solid rgb(213, 210, 210);
+  border-radius: 16px;
+  color:#fff;
+  margin-top:22px;
+}
+.footer{
+  width:100%;
+  height:340px;
+  background:url('~assets/images/footer.jpg');
+  background-size:100% 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding:0 100px;
+  box-sizing: border-box;
+}
+.footer-item1{
+  font-size:14px;
+  color:#fff;
+  border-top:1px solid #fff;
+  border-bottom:1px solid #fff;
+  width:280px;
+  padding:20px 0;
+}
+.footer-item1__text{
+  margin:20px 0;
+}
+.footer-item2{
+  width:280px;
+  height:200px;
+  background:url('~assets/images/map.png') 0 0 no-repeat;
+  background-size:100% 100%;
+}
+.footer-item3{
+  text-align: center;
+}
+.footer-item3--code{
+  width:150px;
+  height:150px;
+  background:url('~assets/images/qrcode.png') 0 0 no-repeat;
+  background-size:100% 100%;
+  margin-bottom:20px;
+}
+.footer-item3--text{
+  font-size:14px;
+  color:#fff;
+  line-height: 30px;
+}
+.author{
+  width:100%;
+  height:44px;
+  background:#16305f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.author__text{
+  color:#fff;
+  font-size:15px;
+  font-weight: 800;
 }
 </style>

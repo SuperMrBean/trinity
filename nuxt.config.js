@@ -27,7 +27,8 @@ export default {
   */
   css: [
     'swiper/css/swiper.css',
-    '~assets/css/normalize.css'
+    '~assets/css/normalize.css',
+    '~assets/css/font.css'
   ],
   /*
   ** Plugins to load before mounting the App
@@ -44,7 +45,22 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy'
   ],
+  axios: {
+    proxy: true
+  },
+  // 设置代理
+  proxy: {
+    '/web': {
+      target: 'http://www.boatng.cn:7002/',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/api': '/'
+      }
+    }
+  },
   /*
   ** Build configuration
   */
