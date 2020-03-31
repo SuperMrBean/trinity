@@ -10,31 +10,15 @@
           <swiper-slide v-for="(item,index) in bannerList" :key="index">
             <img :src="`http://www.boatng.cn:7002${item.path}`" class="swiper-img" alt="">
           </swiper-slide>
-          <!-- <swiper-slide>
-            <img src="@/assets/images/pic1.jpg" class="swiper-img" alt="">
-          </swiper-slide>
-          <swiper-slide>
-            <img src="@/assets/images/pic1.jpg" class="swiper-img" alt="">
-          </swiper-slide>
-          <swiper-slide>
-            <img src="@/assets/images/pic1.jpg" class="swiper-img" alt="">
-          </swiper-slide> -->
         </swiper>
       </client-only>
       <div class=nav>
         <div class="nav-left">
-          <div v-for="(item,index) in titleListLeft" :key="index" class="nav-item" @mouseenter="handleShowPop(true,item)" @mouseleave="handleShowPop(false,item)">{{item.name}}</div>
-          <!-- <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">关于我们</div>
-          <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">什么让我们与众不同</div>
-          <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">课程</div>
-          <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">员工</div> -->
+          <div v-for="(item,index) in titleListLeft" :key="index" class="nav-item" @mouseenter="handleShowPop(true,item)" @mouseleave="handleShowPop(false,item)" @click="handleClickNav(item)">{{item.name}}</div>
         </div>
         <div class="nav-logo"></div>
         <div class="nav-right">
-          <div v-for="(item,index) in titleListRight" :key="index" class="nav-item" @mouseenter="handleShowPop(true,item)" @mouseleave="handleShowPop(false,item)">{{item.name}}</div>
-          <!-- <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">招生部</div>
-          <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">联系我们</div>
-          <div class="nav-item" @mouseenter="handleShowPop(true)" @mouseleave="handleShowPop(false)">新闻</div> -->
+          <div v-for="(item,index) in titleListRight" :key="index" class="nav-item" @mouseenter="handleShowPop(true,item)" @mouseleave="handleShowPop(false,item)" @click="handleClickNav(item)">{{item.name}}</div>
         </div>
       </div>
       <div class="title">
@@ -46,13 +30,7 @@
         <div @mouseenter="handleStayPop(true)" @mouseleave="handleStayPop(false)" class="pop" v-show="isShowPop">
           <div class="pop-main">
             <div class="pop-main-left">
-              <div v-for="(item,index) in popList" :key="index" class="pop-main-lfet__item" @mouseenter="handlePopTitle(item.name)">{{item.name}}</div>
-              <!-- <div class="pop-main-lfet__item">校长欢迎词</div>
-              <div class="pop-main-lfet__item">文化</div>
-              <div class="pop-main-lfet__item">国际教育</div>
-              <div class="pop-main-lfet__item">参观学校</div>
-              <div class="pop-main-lfet__item">学校时间表</div>
-              <div class="pop-main-lfet__item">校历</div> -->
+              <div v-for="(item,index) in popList" :key="index" class="pop-main-lfet__item" @mouseenter="handlePopTitle(item.name)" @click="handleClickNavChildren(item)">{{item.name}}</div>
             </div>
             <div class="pop-main-mid">
               <img src="@/assets/images/banner.jpg" alt="" class="pop-main-mid--img">
@@ -165,7 +143,7 @@ export default {
       timeout:null
     }
   },
-  async asyncData({ params }){
+  async asyncData( ){
     const {data:bannerList} = await getStatic({
       type: 'banner'
     })
@@ -186,6 +164,26 @@ export default {
     }
   },
   methods: {
+    handleClickNav(data){
+      if(data.name === '首页'){
+        this.$router.push({
+          name: 'index'
+        })
+      }else if(data.children.length === 0){
+        return
+      }else{
+        this.$router.push({
+          name:'detail',
+          query:{parentId:data.id,id:null}
+        })
+      }
+    },
+    handleClickNavChildren(data){
+      this.$router.push({
+        name:'detail',
+        query:{parentId:data.parent_id,id:data.id}
+      })
+    },
     handleShowPop(flag,data){
       if(this.timeout){
         clearTimeout(this.timeout)
@@ -371,6 +369,9 @@ export default {
   font-weight: 800;
   font-size:14px;
   padding:8px 0;
+}
+.pop-main-lfet__item:hover{
+  color:#fff;
 }
 .pop-main-mid--img{
   width:100%;
