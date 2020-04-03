@@ -33,7 +33,7 @@
               <div v-for="(item,index) in popList" :key="index" class="pop-main-lfet__item" @mouseenter="handlePopTitle(item.name)" @click="handleClickNavChildren(item)">{{item.name}}</div>
             </div>
             <div class="pop-main-mid">
-              <img src="@/assets/images/banner.jpg" alt="" class="pop-main-mid--img">
+              <img :src="popImg ? `http://www.boatng.cn:7002${popImg}` : ''" alt="" class="pop-main-mid--img">
             </div>
             <div class="pop-main-right">
               <div class="pop-main-right--title">{{popTitle}}</div>
@@ -140,6 +140,7 @@ export default {
       isShowPop:false,
       popList:[],
       popTitle:'',
+      popImg:'',
       timeout:null
     }
   },
@@ -194,6 +195,7 @@ export default {
       }
       this.popList = data.children
       this.popTitle = data.children[0].name
+      this.popImg = data.thumb_image
       if(flag){
         this.isShowPop = flag
       }else{
@@ -225,7 +227,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
 }
@@ -369,6 +371,7 @@ export default {
   font-weight: 800;
   font-size:14px;
   padding:8px 0;
+  cursor: pointer;
 }
 .pop-main-lfet__item:hover{
   color:#fff;

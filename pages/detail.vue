@@ -33,7 +33,7 @@
               <div v-for="(item,index) in popList" :key="index" class="pop-main-lfet__item" @mouseenter="handlePopTitle(item.name)" @click="handleClickNavChildren(item)">{{item.name}}</div>
             </div>
             <div class="pop-main-mid">
-              <img src="@/assets/images/banner.jpg" alt="" class="pop-main-mid--img">
+              <img :src="popImg ? `http://www.boatng.cn:7002${popImg}` : ''" alt="" class="pop-main-mid--img">
             </div>
             <div class="pop-main-right">
               <div class="pop-main-right--title">{{popTitle}}</div>
@@ -45,9 +45,36 @@
     </div>
     <div class="bar"></div>
     <div class="principle">
-      <div class="principle__text">{{navFirst}}</div>
-      <div class="principle__text">{{navSecond}}</div>
-      <div class="principle__text">{{navThird}}</div>
+      <span class="principle__text">{{navFirst}}</span>
+      <span class="principle__text">{{navSecond}}</span>
+      <span class="principle__text">{{navThird}}</span>
+      <span class="principle__text" v-if="navFour">{{navFour}}</span>
+    </div>
+    <div class="article">
+        <div class="article-nav">
+          <div class="article-nav-item" v-for="(item,index) in sideList" :key="index">
+            <div class="article-nav-item--title">
+              <span class="article-nav-item--title__icon" v-if="item.children.length !== 0"></span>
+              <span class="article-nav-item--title__icon2" v-if="item.children.length === 0"></span>
+              <span class="article-nav-item--title__text">{{item.name}}</span>
+            </div>
+            <div v-if="item.children.length !== 0">
+              <toggle v-for="(children,index) in item.children" :key="index">
+                <div class="article-nav-item--children">
+                  <div class="article-nav-item--children__text">{{children.name}}</div>
+                </div>
+              </toggle>
+            </div>
+
+          </div>
+        </div>
+      <div class="article-main">
+        <div class="article-main-title">
+          好奇心
+        </div>
+        <div class="article-main-line"></div>
+        <div class="article-main-text"></div>
+      </div>
     </div>
     <div class="footer">
       <div class="footer-item1">
@@ -71,6 +98,7 @@
 
 <script>
 import { getStatic,getTitle } from '@/utils/api'
+import toggle from '@/assets/js/toggle.js'
 export default {
   data () {
     return {
@@ -88,10 +116,13 @@ export default {
       isShowPop:false,
       popList:[],
       popTitle:'',
+      popImg:'',
       timeout:null,
       navFirst:'',
       navSecond:'',
-      navThird:''
+      navThird:'',
+      navFour:'',
+      sideList:[]
     }
   },
   async asyncData({ query }){
@@ -101,6 +132,7 @@ export default {
     const {data:titleList} = await getTitle({
       is_format:1
     })
+    console.log(titleList)
     let _titleList = titleList.filter((item)=>{return item.is_deleted === 0})
     let length = _titleList.length
     let lengthLeft = Math.floor(length/2)
@@ -118,6 +150,10 @@ export default {
   },
   methods: {
     init(){
+      this.navFirst = ''
+      this.navSecond = ''
+      this.navThird = ''
+      this.navFour = ''
       if(this.$route.query.id){
         let _index1 = this.titleList.findIndex((item)=>{
           return item.id === Number(this.$route.query.parentId)
@@ -128,6 +164,10 @@ export default {
         this.navFirst = "首页"
         this.navSecond = this.titleList[_index1].name
         this.navThird = this.titleList[_index1].children[_index2].name
+        if(this.titleList[_index1].children[_index2].children.length !== 0){
+          this.navFour = this.titleList[_index1].children[_index2].children[0].name
+        }
+        this.sideList = this.titleList[_index1].children
       }else{
         let _index = this.titleList.findIndex((item)=>{
           return item.id === Number(this.$route.query.parentId)
@@ -135,7 +175,12 @@ export default {
         this.navFirst = "首页"
         this.navSecond = this.titleList[_index].name
         this.navThird = this.titleList[_index].children[0].name
+        if(this.titleList[_index].children[0].children.length !== 0){
+          this.navFour = this.titleList[_index].children[0].children[0].name
+        }
+        this.sideList = this.titleList[_index].children
       }
+      console.log(this.sideList)
     },
     handleClickNav(data){
       if(data.name === '首页'){
@@ -167,6 +212,7 @@ export default {
       }
       this.popList = data.children
       this.popTitle = data.children[0].name
+      this.popImg = data.thumb_image
       if(flag){
         this.isShowPop = flag
       }else{
@@ -192,18 +238,26 @@ export default {
     }
   },
   mounted(){
-    // this.init()
+    this.init()
   },
   components: {
+    toggle
   }
 }
 </script>
 
-<style>
+<style scoped>
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.router-slid-enter-active, .router-slid-leave-active {
+  transition: all .4s;
+}
+.router-slid-enter, .router-slid-leave-active {
+  transform: translateY(-40px);
   opacity: 0;
 }
 .swiper{
@@ -343,6 +397,7 @@ export default {
   font-weight: 800;
   font-size:14px;
   padding:8px 0;
+  cursor: pointer;
 }
 .pop-main-lfet__item:hover{
   color:#fff;
@@ -384,8 +439,80 @@ export default {
 .principle__text{
   color:#fff;
   font-size:22px;
-  border-right:2px solid #fff;
   padding:0 30px;
+  border-right: 2px solid #fff;
+}
+.article{
+  width: 100%;
+  background:#fff;
+  padding-top:78px;
+  text-align: center;
+}
+.article-nav{
+  display: inline-block;
+  width:220px;
+  background:#e8c473;
+  vertical-align: top;
+  text-align: left;
+  padding:76px 26px;
+  box-sizing: border-box;
+}
+.article-nav-item--title{
+  padding:14px 0;
+  border-bottom:1px solid #b8881c;
+}
+.article-nav-item--title__icon{
+  display: inline-block;
+  width:14px;
+  height:7px;
+  background: url('~assets/images/icon_folder.png') 0 0 no-repeat;
+  background-size:100% 100%;
+  vertical-align: top;
+  margin-top:5px;
+}
+.article-nav-item--title__icon2{
+  display: inline-block;
+  width:6px;
+  height:6px;
+  background:#805a06;
+  border-radius: 6px;
+  vertical-align: top;
+  margin-top:6px;
+  margin-right: 6px;
+}
+.article-nav-item--title__text{
+  font-size:16px;
+  color:#805a06;
+}
+.article-nav-item--children{
+  padding-left:34px;
+  border-bottom:1px solid #b8881c;
+}
+.article-nav-item--children__text{
+  font-size:14px;
+  color:#805a06;
+  line-height: 40px;
+}
+.article-main{
+  display: inline-block;
+  width:690px;
+  margin-left:15px
+}
+.article-main-title{
+  width:100%;
+  height:40px;
+  background: #e8c473;
+  line-height: 40px;
+  text-align: left;
+  padding-left:20px;
+  font-size:20px;
+  box-sizing: border-box;
+}
+.article-main-line{
+  width:100%;
+  height:1px;
+  background:#e8c473;
+  margin:20px 0;
 }
 .principle__text:last-child{
   border-right: none;
