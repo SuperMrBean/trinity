@@ -1,5 +1,5 @@
 import http from '@/plugins/http'
-const baseUrl = 'http://www.boatng.cn:7002'
+const baseUrl = process.env.baseUrl
 function getStatic(params) {
   return http({
     url: `${baseUrl}/api/v1/static`,
@@ -14,4 +14,10 @@ function getTitle(params) {
     params
   })
 }
-export { getStatic,getTitle }
+function getArticle(params) {
+  return http({
+    url: `${baseUrl}/api/v1/article/${params.id}`,
+    method: 'get'
+  })
+}
+export { getStatic,getTitle,getArticle }

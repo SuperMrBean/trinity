@@ -8,17 +8,21 @@
           :options="swiperOptions"
         >
           <swiper-slide v-for="(item,index) in bannerList" :key="index">
-            <img :src="`http://www.boatng.cn:7002${item.path}`" class="swiper-img" alt="">
+            <img :src="`${baseUrl}${item.path}`" class="swiper-img" alt="">
           </swiper-slide>
         </swiper>
       </client-only>
+      <div class="lang">
+        <div class="lang_ch">中文</div>
+        <div class="lang_en">English</div>
+      </div>
       <div class=nav>
         <div class="nav-left">
-          <div v-for="(item,index) in titleListLeft" :key="index" class="nav-item" @mouseenter="handleShowPop(true,item)" @mouseleave="handleShowPop(false,item)" @click="handleClickNav(item)">{{item.name}}</div>
+          <div v-for="(item,index) in titleListLeft" :key="index" class="nav-item" @mouseenter="handleShowPop(true,item)" @mouseleave="handleShowPop(false,item)" @click="handleClickNav(item)">{{item.english_name}}</div>
         </div>
         <div class="nav-logo"></div>
         <div class="nav-right">
-          <div v-for="(item,index) in titleListRight" :key="index" class="nav-item" @mouseenter="handleShowPop(true,item)" @mouseleave="handleShowPop(false,item)" @click="handleClickNav(item)">{{item.name}}</div>
+          <div v-for="(item,index) in titleListRight" :key="index" class="nav-item" @mouseenter="handleShowPop(true,item)" @mouseleave="handleShowPop(false,item)" @click="handleClickNav(item)">{{item.english_name}}</div>
         </div>
       </div>
       <div class="title">
@@ -30,13 +34,13 @@
         <div @mouseenter="handleStayPop(true)" @mouseleave="handleStayPop(false)" class="pop" v-show="isShowPop">
           <div class="pop-main">
             <div class="pop-main-left">
-              <div v-for="(item,index) in popList" :key="index" class="pop-main-lfet__item" @mouseenter="handlePopTitle(item.name)" @click="handleClickNavChildren(item)">{{item.name}}</div>
+              <div v-for="(item,index) in popList" :key="index" class="pop-main-lfet__item" @mouseenter="handlePopTitle(item)" @click="handleClickNavChildren(item)">{{item.english_name}}</div>
             </div>
             <div class="pop-main-mid">
-              <img :src="popImg ? `http://www.boatng.cn:7002${popImg}` : ''" alt="" class="pop-main-mid--img">
+              <img :src="popImg ? `${baseUrl}${popImg}` : ''" alt="" class="pop-main-mid--img">
             </div>
-            <div class="pop-main-right">
-              <div class="pop-main-right--title">{{popTitle}}</div>
+            <div class="pop-main-right" @click="handleJump">
+              <div class="pop-main-right--title">{{popTitle.english_name}}</div>
               <div class="pop-main-right--icon"></div>
             </div>
           </div>
@@ -45,44 +49,16 @@
     </div>
     <div class="bar"></div>
     <div class="principle">
-      <div class="principle-line1">我们的使命</div>
-      <div class="principle-line2">用圣心培育每一个孩子，让他们成为具有创造性，充满爱心和热情的学习者。</div>
+      <div class="principle-line1">Our Mission</div>
+      <div class="principle-line2">To nurture the sacred heart in every child to become a creative, caring and passionate learner.</div>
     </div>
     <div class="video">
-      <div class="video-item">
-        <img class="video-item--img" src="@/assets/images/video.jpg" alt="">
+      <div class="video-item" v-for="(item,index) in videoList" :key="index">
+        <img class="video-item--img" :src="`${baseUrl}${item.path}`" alt="">
         <div class="video-item--title">
-          <span class="video-item--title__text">Our Chefs</span>
+          <span class="video-item--title__text">{{item.video_english_title}}</span>
         </div>
-        <div class="video-item__icon"></div>
-      </div>
-      <div class="video-item">
-        <img class="video-item--img" src="@/assets/images/video.jpg" alt="">
-        <div class="video-item--title">
-          <span class="video-item--title__text">Our Chefs</span>
-        </div>
-        <div class="video-item__icon"></div>
-      </div>
-      <div class="video-item">
-        <img class="video-item--img" src="@/assets/images/video.jpg" alt="">
-        <div class="video-item--title">
-          <span class="video-item--title__text">Our Chefs</span>
-        </div>
-        <div class="video-item__icon"></div>
-      </div>
-      <div class="video-item">
-        <img class="video-item--img" src="@/assets/images/video.jpg" alt="">
-        <div class="video-item--title">
-          <span class="video-item--title__text">Our Chefs</span>
-        </div>
-        <div class="video-item__icon"></div>
-      </div>
-      <div class="video-item">
-        <img class="video-item--img" src="@/assets/images/video.jpg" alt="">
-        <div class="video-item--title">
-          <span class="video-item--title__text">Our Chefs</span>
-        </div>
-        <div class="video-item__icon"></div>
+        <div class="video-item__icon" @click="handleShowPlayer(item)"></div>
       </div>
     </div>
     <div class="introduction">
@@ -96,28 +72,34 @@
           </div>
         </div>
         <div class="introduction-main-right">
-          <div class="introduction-main-right__text">Ms. Whelen是圣心国际幼稚园的创校校长。她有30多年国际教育的经验，是华南最知名的国际教育者之一。在担任广州裕达隆国际学校校长（2007-2014）和爱莎国际学校创校校长(2014-2017)之前，她是伦敦国际学校校长(2001-2005)和乌干达Kabira国际学校校长(2005-2007)。</div>
-          <div class="introduction-main-right__btn">更多 ></div>
+          <div class="introduction-main-right__text">Ms Whelen is the founding Director of Trinity International Kindergarten. With more than 30 years' experience in international education, Ms. Whelen is one of South China's best-known international educators. She was Head of the International School of London (2001-2005) and Kabira International School in Uganda (2005-2007) before becoming Head of Utahloy International School Guangzhou (2007-14) and Founding Head of ISA International School Guangzhou (2014-2017).</div>
+          <div class="introduction-main-right__btn">More ></div>
         </div>
       </div>
     </div>
     <div class="footer">
       <div class="footer-item1">
-        <div>广州市天河区珠江新城花城大道663号</div>
+        <div>No. 663 Hua Cheng Da Dao,Zhu Jiang New Town, TIanhe District, Guangzhou</div>
         <div class="footer-item1__text">T / +86(20)8558 3287</div>
         <div>E / www.trinitygz.com</div>
       </div>
       <div class="footer-item2"></div>
       <div class="footer-item3">
         <div class="footer-item3--code"></div>
-        <span class="footer-item3--text">扫描二维码</span>
+        <span class="footer-item3--text">Scan our QR code</span>
         <br>
-        <span class="footer-item3--text">关注我们</span>
+        <span class="footer-item3--text">Follow us on WeChat</span>
       </div>
     </div>
     <div class="author">
       <span class="author__text">粤ICP备05003387号 Powered by XOOPS!</span>
     </div>
+    <transition name="fade">
+      <div class="mask" v-show="video.isShow">
+        <div class="close" @click="handleClose"></div>
+        <video class="player" controls="" :data-src="video.src" :src="video.src"></video>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -126,6 +108,7 @@ import { getStatic,getTitle } from '@/utils/api'
 export default {
   data () {
     return {
+      baseUrl:process.env.baseUrl,
       swiperOptions: {
         loop: true,
         slidesPerView: 'auto',
@@ -139,9 +122,16 @@ export default {
       },
       isShowPop:false,
       popList:[],
-      popTitle:'',
+      popTitle:{
+        name:''
+      },
       popImg:'',
-      timeout:null
+      timeout:null,
+      // videojs options
+      video:{
+        isShow:false,
+        src:''
+      }
     }
   },
   async asyncData( ){
@@ -168,20 +158,20 @@ export default {
     handleClickNav(data){
       if(data.name === '首页'){
         this.$router.push({
-          name: 'index'
+          name: 'home_en'
         })
       }else if(data.children.length === 0){
         return
       }else{
         this.$router.push({
-          name:'detail',
+          name:'detail_en',
           query:{parentId:data.id,id:null}
         })
       }
     },
     handleClickNavChildren(data){
       this.$router.push({
-        name:'detail',
+        name:'detail_en',
         query:{parentId:data.parent_id,id:data.id}
       })
     },
@@ -194,7 +184,7 @@ export default {
         return 
       }
       this.popList = data.children
-      this.popTitle = data.children[0].name
+      this.popTitle = data.children[0]
       this.popImg = data.thumb_image
       if(flag){
         this.isShowPop = flag
@@ -216,23 +206,42 @@ export default {
         },2000)
       }
     },
-    handlePopTitle(title){
-      this.popTitle = title
+    handlePopTitle(data){
+      this.popTitle = data
+    },
+    handleJump(){
+      this.$router.push({
+        name:'detail_en',
+        query:{parentId:this.popTitle.parent_id,id:this.popTitle.id}
+      })
+    },
+    handleShowPlayer(data){
+      this.video.isShow = true;
+      console.log(data)
+      this.video.src = `${this.baseUrl}${data.video_path}`
+    },
+    handleClose(){
+      this.video.isShow = false;
+      this.video.src = ''
     }
   },
-  async mounted(){
+  mounted(){
   },
   components: {
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+.container{
+  width:100%;
+  height: 100%;
 }
 .swiper{
   height: auto;
@@ -253,6 +262,35 @@ export default {
   width:100%;
   height: 100%;
   object-fit: cover;
+}
+.lang{
+  position: absolute;
+  top:36px;
+  right:70px;
+  z-index: 999;
+}
+.lang_ch{
+  display: inline-block;
+  padding:6px;
+  font-size: 16px;
+  border:2px solid #f8b551;
+  color:#f8b551;
+  margin-right:10px;
+  cursor: pointer;
+}
+.lang_en{
+  display: inline-block;
+  padding:6px;
+  font-size: 16px;
+  border:2px solid #f8b551;
+  color:#f8b551;
+  cursor: pointer;
+}
+.lang_ch:hover{
+  color:#fff
+}
+.lang_en:hover{
+  color:#fff
 }
 .nav{
   display: flex;
@@ -365,6 +403,7 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  cursor: pointer;
 }
 .pop-main-lfet__item{
   color:#dcbb71;
@@ -424,18 +463,17 @@ export default {
 }
 .video{
   width:100%;
-  height:360px;
   background:#fff;
-  padding-top:67px;
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
+  padding:40px 122px;
+  box-sizing: border-box;
 }
 .video-item{
+  display: inline-block;
   position: relative;
   width: 182px;
   height:324px;
   margin-right:20px;
+  margin-top:27px;
   box-shadow: 4px 4px 6px 0px #98a3b6;
   border-radius: 4px;
   font-size:0;
@@ -470,6 +508,7 @@ export default {
   left:50%;
   transform: translateX(-50%);
   top:100px;
+  cursor: pointer;
 }
 .introduction{
   width:100%;
@@ -527,9 +566,9 @@ export default {
 
 }
 .introduction-main-right__text{
-  font-size:16px;
+  font-size:14px;
   color:#fff;
-  line-height: 30px;
+  line-height: 21px;
   text-align: justify;
 }
 .introduction-main-right__btn{
@@ -596,5 +635,33 @@ export default {
   color:#fff;
   font-size:15px;
   font-weight: 800;
+}
+.mask{
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.74);
+  position: fixed;
+  top:0;
+  left:0;
+  bottom: 0;
+  right:0;
+  z-index:9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.player{
+  width:800px;
+  max-height:500px;
+}
+.close{
+  position: absolute;
+  width:40px;
+  height:40px;
+  background:url('~assets/images/close.png') 0 0 no-repeat;
+  background-size:100%;
+  top:40px;
+  right:40px;
+  cursor: pointer;
 }
 </style>

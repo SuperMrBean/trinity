@@ -1,6 +1,12 @@
 
+
+const env = require('./env')
 export default {
   mode: 'universal',
+
+  env: {
+    baseUrl: env[process.env.MODE].ENV_API
+  },
   /*
   ** Headers of the page
   */
@@ -28,7 +34,7 @@ export default {
   css: [
     'swiper/css/swiper.css',
     '~assets/css/normalize.css',
-    '~assets/css/font.css'
+    '~assets/css/font.css',
   ],
   /*
   ** Plugins to load before mounting the App

@@ -7,14 +7,14 @@
           class="swiper-wrap"
           :options="swiperOptions"
         >
-          <swiper-slide>
-            <img :src="`http://www.boatng.cn:7002${poster}`" class="swiper-img" alt="">
+          <swiper-slide v-for="(item,index) in bannerList" :key="index">
+            <img :src="`${baseUrl}${item.path}`" class="swiper-img" alt="">
           </swiper-slide>
         </swiper>
       </client-only>
       <div class="lang">
-        <div class="lang_ch">中文</div>
-        <div class="lang_en">English</div>
+        <div class="lang_ch" @click="handleChangeLang(1)">中文</div>
+        <div class="lang_en" @click="handleChangeLang(2)">English</div>
       </div>
       <div class=nav>
         <div class="nav-left">
@@ -37,7 +37,7 @@
               <div v-for="(item,index) in popList" :key="index" class="pop-main-lfet__item" @mouseenter="handlePopTitle(item)" @click="handleClickNavChildren(item)">{{item.name}}</div>
             </div>
             <div class="pop-main-mid">
-              <img :src="popImg ? `http://www.boatng.cn:7002${popImg}` : ''" alt="" class="pop-main-mid--img">
+              <img :src="popImg ? `${baseUrl}${popImg}` : ''" alt="" class="pop-main-mid--img">
             </div>
             <div class="pop-main-right" @click="handleJump">
               <div class="pop-main-right--title">{{popTitle.name}}</div>
@@ -49,35 +49,31 @@
     </div>
     <div class="bar"></div>
     <div class="principle">
-      <span class="principle__text">{{navFirst}}</span>
-      <span class="principle__text">{{navSecond}}</span>
-      <span class="principle__text">{{navThird}}</span>
-      <span class="principle__text" v-if="navFour">{{navFour}}</span>
+      <div class="principle-line1">我们的使命</div>
+      <div class="principle-line2">用圣心培育每一个孩子，让他们成为具有创造性，充满爱心和热情的学习者。</div>
     </div>
-    <div class="article">
-        <div class="article-nav">
-          <div class="article-nav-item" v-for="(item,index) in sideList" :key="index">
-            <div class="article-nav-item--title" :class="{'noborder':item.isSelect && item.children.length !== 0}" @click="handleFolder(index)">
-              <span class="article-nav-item--title__icon" v-if="item.children.length !== 0"></span>
-              <span class="article-nav-item--title__icon2" v-if="item.children.length === 0"></span>
-              <span class="article-nav-item--title__text" :class="{'select':item.isSelect}">{{item.name}}</span>
-            </div>
-            <div v-if="item.children.length !== 0">
-              <toggle v-for="(children,indexChildren) in item.children" :key="indexChildren">
-                <div class="article-nav-item--children" @click="handleFolderChildren(children,index)" v-show="item.isSelect">
-                  <div class="article-nav-item--children__text">{{children.name}}</div>
-                </div>
-              </toggle>
-            </div>
-
+    <div class="video">
+      <div class="video-item" v-for="(item,index) in videoList" :key="index">
+        <img class="video-item--img" :src="`${baseUrl}${item.path}`" alt="">
+        <div class="video-item--title">
+          <span class="video-item--title__text">{{item.video_title}}</span>
+        </div>
+        <div class="video-item__icon" @click="handleShowPlayer(item)"></div>
+      </div>
+    </div>
+    <div class="introduction">
+      <div class="introduction-main">
+        <div class="introduction-main-left">
+          <div class="introduction-main-left__img"></div>
+          <div class="introduction-main-left__name">
+            <span class="introduction-main-left__name--text1">Elaine Whelen</span>
+            <br>
+            <span class="introduction-main-left__name--text2">Director of Education</span>
           </div>
         </div>
-      <div class="article-main">
-        <div class="article-main-title">
-          {{articleTitle}}
-        </div>
-        <div class="article-main-line"></div>
-        <div class="article-main-text" v-html="content">
+        <div class="introduction-main-right">
+          <div class="introduction-main-right__text">Ms. Whelen是圣心国际幼稚园的创校校长。她有30多年国际教育的经验，是华南最知名的国际教育者之一。在担任广州裕达隆国际学校校长（2007-2014）和爱莎国际学校创校校长(2014-2017)之前，她是伦敦国际学校校长(2001-2005)和乌干达Kabira国际学校校长(2005-2007)。</div>
+          <div class="introduction-main-right__btn">更多 ></div>
         </div>
       </div>
     </div>
@@ -98,15 +94,21 @@
     <div class="author">
       <span class="author__text">粤ICP备05003387号 Powered by XOOPS!</span>
     </div>
+    <transition name="fade">
+      <div class="mask" v-show="video.isShow">
+        <div class="close" @click="handleClose"></div>
+        <video class="player" controls="" :data-src="video.src" :src="video.src"></video>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
-import { getStatic,getTitle,getArticle } from '@/utils/api'
-import toggle from '@/assets/js/toggle.js'
+import { getStatic,getTitle } from '@/utils/api'
 export default {
   data () {
     return {
+      baseUrl:process.env.baseUrl,
       swiperOptions: {
         loop: true,
         slidesPerView: 'auto',
@@ -115,10 +117,9 @@ export default {
           el: '.swiper-pagination',
           dynamicBullets: true
         },
-        autoplay:false,
+        autoplay:true,
         speed:800
       },
-      poster:'',
       isShowPop:false,
       popList:[],
       popTitle:{
@@ -126,126 +127,41 @@ export default {
       },
       popImg:'',
       timeout:null,
-      navFirst:'',
-      navSecond:'',
-      navThird:'',
-      navFour:'',
-      sideList:[],
-      content:'',
-      articleTitle:''
-    }
-  },
-  async asyncData({ query }){
-    try {
-      const {data:titleList} = await getTitle({
-        is_format:1
-      })
-      let _titleList = titleList.filter((item)=>{return item.is_deleted === 0})
-      let length = _titleList.length
-      let lengthLeft = Math.floor(length/2)
-      return {
-        titleList,
-        titleListLeft:_titleList.slice(0,lengthLeft),
-        titleListRight:_titleList.slice(lengthLeft,length)
+      // videojs options
+      video:{
+        isShow:false,
+        src:''
       }
-    } catch (error) {
-      console.log(error)
     }
   },
-  watch: {
-    $route(){
-      this.init()
+  async asyncData( ){
+    const {data:bannerList} = await getStatic({
+      type: 'banner'
+    })
+    const {data:videoList} = await getStatic({
+      type: 'video'
+    })
+    const {data:titleList} = await getTitle({
+      is_format:1
+    })
+    let _titleList = titleList.filter((item)=>{return item.is_deleted === 0})
+    let length = _titleList.length
+    let lengthLeft = Math.floor(length/2)
+    return {
+      bannerList,
+      videoList,
+      titleListLeft:_titleList.slice(0,lengthLeft),
+      titleListRight:_titleList.slice(lengthLeft,length)
     }
   },
   methods: {
-    async init(){
-      this.navFirst = ''
-      this.navSecond = ''
-      this.navThird = ''
-      this.navFour = ''
-      if(this.$route.query.id){
-        let _index1 = this.titleList.findIndex((item)=>{
-          return item.id === Number(this.$route.query.parentId)
-        })
-        let _index2 = this.titleList[_index1].children.findIndex((item)=>{
-          return item.id === Number(this.$route.query.id)
-        })
-        this.navFirst = "首页"
-        this.navSecond = this.titleList[_index1].name
-        this.navThird = this.titleList[_index1].children[_index2].name
-        this.poster = this.titleList[_index1].cover
-        if(this.titleList[_index1].children[_index2].children.length !== 0){
-          this.navFour = this.titleList[_index1].children[_index2].children[0].name
-        }
-        this.sideList = this.titleList[_index1].children.map((item)=>{
-          return {
-            ...item,
-            isSelect:false
-          }
-        })
-        this.sideList[_index2].isSelect = true
-        if(this.sideList[_index2].children.length === 0){
-          try {
-            const {data:{content}} = await getArticle({
-              id:this.sideList[_index2].article_id
-            })
-            this.content = content
-            this.articleTitle = this.sideList[_index2].name
-          } catch (error) {
-            console.log(error)
-          }
-        }else{
-          try {
-            const {data:{content}} = await getArticle({
-              id:this.sideList[_index2].children[0].article_id
-            })
-            this.content = content
-            this.articleTitle = this.sideList[_index2].children[0].name
-          } catch (error) {
-            console.log(error)
-          }
-        }
-      }else{
-        let _index = this.titleList.findIndex((item)=>{
-          return item.id === Number(this.$route.query.parentId)
-        })
-        this.navFirst = "首页"
-        this.navSecond = this.titleList[_index].name
-        this.navThird = this.titleList[_index].children[0].name
-        console.log(this.titleList[_index])
-        this.poster = this.titleList[_index].cover
-        if(this.titleList[_index].children[0].children.length !== 0){
-          this.navFour = this.titleList[_index].children[0].children[0].name
-        }
-        this.sideList = this.titleList[_index].children.map((item)=>{
-          return {
-            ...item,
-            isSelect:false
-          }
-        })
-        this.sideList[0].isSelect = true
-        if(this.sideList[0].children.length === 0){
-          try {
-            const {data:{content}} = await getArticle({
-              id:this.sideList[0].article_id
-            })
-            this.content = content
-            this.articleTitle = this.sideList[0].name
-          } catch (error) {
-            console.log(error)
-          }
-        }else{
-          try {
-            const {data:{content}} = await getArticle({
-              id:this.sideList[0].children[0].article_id
-            })
-            this.content = content
-            this.articleTitle = this.sideList[0].children[0].name
-          } catch (error) {
-            console.log(error)
-          }
-        }
-      }
+    handleChangeLang(type){
+      let url = window.location.pathname
+      console.log(url)
+      // switch(type){
+      //   case 1:
+      //     url.replace()
+      // }
     },
     handleClickNav(data){
       if(data.name === '首页'){
@@ -307,47 +223,19 @@ export default {
         query:{parentId:this.popTitle.parent_id,id:this.popTitle.id}
       })
     },
-    async handleFolder(index){
-      this.sideList.forEach((item,indexValue) => {
-        if(index !== indexValue){
-          item.isSelect = false
-        }else{
-          this.sideList[index].isSelect = !this.sideList[index].isSelect
-        }
-      });
-      if(this.sideList[index].children.length === 0){
-        try {
-          const {data:{content}} = await getArticle({
-            id:this.sideList[index].article_id
-          })
-          this.content = content
-          this.navThird = this.sideList[index].name
-          this.articleTitle = this.sideList[index].name
-          this.navFour = ''
-        } catch (error) {
-          console.log(error)
-        }
-      }
+    handleShowPlayer(data){
+      this.video.isShow = true;
+      console.log(data)
+      this.video.src = `${this.baseUrl}${data.video_path}`
     },
-    async handleFolderChildren(data,index){
-      try {
-        const {data:{content}} = await getArticle({
-          id:data.article_id
-        })
-        this.content = content
-        this.navThird = this.sideList[index].name
-        this.navFour = data.name
-        this.articleTitle = data.name
-      } catch (error) {
-        console.log(error)
-      }
+    handleClose(){
+      this.video.isShow = false;
+      this.video.src = ''
     }
   },
   mounted(){
-    this.init()
   },
   components: {
-    toggle
   }
 }
 </script>
@@ -358,6 +246,10 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+.container{
+  width:100%;
+  height: 100%;
 }
 .swiper{
   height: auto;
@@ -564,104 +456,137 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
-.principle__text{
+.principle-line1{
+  font-size:18px;
+  font-weight: 800;
   color:#fff;
-  font-size:22px;
-  padding:0 30px;
-  border-right: 2px solid #fff;
 }
-.article{
-  width: 100%;
+.principle-line2{
+  font-size:14px;
+  font-weight: 800;
+  color:#fff;
+  margin-top:10px;
+}
+.video{
+  width:100%;
   background:#fff;
-  padding-top:78px;
-  text-align: center;
-}
-.article-nav{
-  display: inline-block;
-  width:220px;
-  background:#e8c473;
-  vertical-align: top;
-  text-align: left;
-  padding:76px 26px;
+  padding:40px 122px;
   box-sizing: border-box;
 }
-.article-nav-item{
+.video-item{
+  display: inline-block;
+  position: relative;
+  width: 182px;
+  height:324px;
+  margin-right:20px;
+  margin-top:27px;
+  box-shadow: 4px 4px 6px 0px #98a3b6;
+  border-radius: 4px;
+  font-size:0;
+}
+.video-item:last-child{
+  margin-right:0;
+}
+.video-item--img{
+  width:100%;
+  height:248px;
+  object-fit: contain;
+}
+.video-item--title{
+  width:100%;
+  height:76px;
+  background:#dcbb71;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.video-item--title__text{
+  font-size:20px;
+  color:#16305f;
+  font-weight: 800;
+}
+.video-item__icon{
+  position: absolute;
+  width:60px;
+  height:60px;
+  background:url('~assets/images/play.png');
+  background-size:100% 100%;
+  left:50%;
+  transform: translateX(-50%);
+  top:100px;
   cursor: pointer;
 }
-.article-nav-item--title{
-  padding:14px 0;
-  border-bottom:1px solid #b8881c;
+.introduction{
+  width:100%;
+  height:470px;
+  background:#16305f;
+  display: flex;
+  justify-content: center;
 }
-.article-nav-item--title__icon{
-  display: inline-block;
-  width:14px;
-  height:7px;
-  background: url('~assets/images/icon_folder.png') 0 0 no-repeat;
+.introduction-main{
+  width:61%;
+  height:410px;
+  background:url('~assets/images/square.png');
   background-size:100% 100%;
-  vertical-align: top;
-  margin-top:5px;
+  margin-top:50px;
 }
-.article-nav-item--title__icon2{
+.introduction-main-left{
   display: inline-block;
-  width:6px;
-  height:6px;
-  background:#805a06;
-  border-radius: 6px;
-  vertical-align: top;
-  margin-top:6px;
-  margin-right: 6px;
+  margin-top:68px;
+  margin-left:63px;
+  width:180px;
 }
-.article-nav-item--title__text{
+.introduction-main-left__img{
+  width:180px;
+  height:180px;
+  background:url('~assets/images/director.jpg');
+  background-size:100% 100%;
+  border-radius: 100%;
+}
+.introduction-main-left__name{
+  text-align: center;
+}
+.introduction-main-left__name--text1{
+  display: inline-block;
+  margin-top:24px;
+  color:#fff;
+  font-size:18px;
+  font-weight: 800;
+}
+.introduction-main-left__name--text2{
+  display: inline-block;
+  margin-top:10px;
+  color:#fff;
+  font-size:12px;
+  font-weight: 800;
+}
+.introduction-main-right{
+  display: inline-block;
+  width:400px;
+  height:210px;
+  vertical-align: top;
+  margin-top:62px;
+  margin-left:84px;
+  padding-top:20px;
+  border-top:1px solid #dcbb71;
+
+}
+.introduction-main-right__text{
   font-size:16px;
-  color:#805a06;
-}
-.article-nav-item--title__text:hover{
   color:#fff;
+  line-height: 30px;
+  text-align: justify;
 }
-.article-nav-item--children{
-  padding-left:34px;
-}
-.article-nav-item--children:last-child{
-  border-bottom:1px solid #b8881c;
-}
-.article-nav-item--children__text{
-  font-size:14px;
-  color:#805a06;
-  line-height: 40px;
-}
-.article-nav-item--children__text:hover{
-  color:#fff;
-}
-.article-main{
+.introduction-main-right__btn{
   display: inline-block;
-  width:690px;
-  margin-left:15px
-}
-.article-main-title{
-  width:100%;
-  height:40px;
-  background: #e8c473;
-  line-height: 40px;
-  text-align: left;
-  padding-left:20px;
-  font-size:20px;
-  box-sizing: border-box;
-}
-.article-main-line{
-  width:100%;
-  height:1px;
-  background:#e8c473;
-  margin:20px 0;
-}
-.article-main-text{
-  text-align: left;
-  /deep/img{
-    width:100%;
-  }
-}
-.principle__text:last-child{
-  border-right: none;
+  font-size:16px;
+  padding:4px 18px;
+  border:1px solid rgb(213, 210, 210);
+  border-radius: 16px;
+  color:#fff;
+  margin-top:22px;
 }
 .footer{
   width:100%;
@@ -719,10 +644,32 @@ export default {
   font-size:15px;
   font-weight: 800;
 }
-.select{
-  color:#16305f;
+.mask{
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.74);
+  position: fixed;
+  top:0;
+  left:0;
+  bottom: 0;
+  right:0;
+  z-index:9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.noborder{
-  border-bottom:none;
+.player{
+  width:800px;
+  max-height:500px;
+}
+.close{
+  position: absolute;
+  width:40px;
+  height:40px;
+  background:url('~assets/images/close.png') 0 0 no-repeat;
+  background-size:100%;
+  top:40px;
+  right:40px;
+  cursor: pointer;
 }
 </style>

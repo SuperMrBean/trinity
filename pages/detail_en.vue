@@ -18,11 +18,11 @@
       </div>
       <div class=nav>
         <div class="nav-left">
-          <div v-for="(item,index) in titleListLeft" :key="index" class="nav-item" @mouseenter="handleShowPop(true,item)" @mouseleave="handleShowPop(false,item)" @click="handleClickNav(item)">{{item.name}}</div>
+          <div v-for="(item,index) in titleListLeft" :key="index" class="nav-item" @mouseenter="handleShowPop(true,item)" @mouseleave="handleShowPop(false,item)" @click="handleClickNav(item)">{{item.english_name}}</div>
         </div>
         <div class="nav-logo"></div>
         <div class="nav-right">
-          <div v-for="(item,index) in titleListRight" :key="index" class="nav-item" @mouseenter="handleShowPop(true,item)" @mouseleave="handleShowPop(false,item)" @click="handleClickNav(item)">{{item.name}}</div>
+          <div v-for="(item,index) in titleListRight" :key="index" class="nav-item" @mouseenter="handleShowPop(true,item)" @mouseleave="handleShowPop(false,item)" @click="handleClickNav(item)">{{item.english_name}}</div>
         </div>
       </div>
       <div class="title">
@@ -34,7 +34,7 @@
         <div @mouseenter="handleStayPop(true)" @mouseleave="handleStayPop(false)" class="pop" v-show="isShowPop">
           <div class="pop-main">
             <div class="pop-main-left">
-              <div v-for="(item,index) in popList" :key="index" class="pop-main-lfet__item" @mouseenter="handlePopTitle(item)" @click="handleClickNavChildren(item)">{{item.name}}</div>
+              <div v-for="(item,index) in popList" :key="index" class="pop-main-lfet__item" @mouseenter="handlePopTitle(item)" @click="handleClickNavChildren(item)">{{item.english_name}}</div>
             </div>
             <div class="pop-main-mid">
               <img :src="popImg ? `http://www.boatng.cn:7002${popImg}` : ''" alt="" class="pop-main-mid--img">
@@ -60,12 +60,12 @@
             <div class="article-nav-item--title" :class="{'noborder':item.isSelect && item.children.length !== 0}" @click="handleFolder(index)">
               <span class="article-nav-item--title__icon" v-if="item.children.length !== 0"></span>
               <span class="article-nav-item--title__icon2" v-if="item.children.length === 0"></span>
-              <span class="article-nav-item--title__text" :class="{'select':item.isSelect}">{{item.name}}</span>
+              <span class="article-nav-item--title__text" :class="{'select':item.isSelect}">{{item.english_name}}</span>
             </div>
             <div v-if="item.children.length !== 0">
               <toggle v-for="(children,indexChildren) in item.children" :key="indexChildren">
                 <div class="article-nav-item--children" @click="handleFolderChildren(children,index)" v-show="item.isSelect">
-                  <div class="article-nav-item--children__text">{{children.name}}</div>
+                  <div class="article-nav-item--children__text">{{children.english_name}}</div>
                 </div>
               </toggle>
             </div>
@@ -83,16 +83,16 @@
     </div>
     <div class="footer">
       <div class="footer-item1">
-        <div>广州市天河区珠江新城花城大道663号</div>
+        <div>No. 663 Hua Cheng Da Dao,Zhu Jiang New Town, TIanhe District, Guangzhou</div>
         <div class="footer-item1__text">T / +86(20)8558 3287</div>
         <div>E / www.trinitygz.com</div>
       </div>
       <div class="footer-item2"></div>
       <div class="footer-item3">
         <div class="footer-item3--code"></div>
-        <span class="footer-item3--text">扫描二维码</span>
+        <span class="footer-item3--text">Scan our QR code</span>
         <br>
-        <span class="footer-item3--text">关注我们</span>
+        <span class="footer-item3--text">Follow us on WeChat</span>
       </div>
     </div>
     <div class="author">
@@ -170,12 +170,12 @@ export default {
         let _index2 = this.titleList[_index1].children.findIndex((item)=>{
           return item.id === Number(this.$route.query.id)
         })
-        this.navFirst = "首页"
-        this.navSecond = this.titleList[_index1].name
-        this.navThird = this.titleList[_index1].children[_index2].name
+        this.navFirst = "Home"
+        this.navSecond = this.titleList[_index1].english_name
+        this.navThird = this.titleList[_index1].children[_index2].english_name
         this.poster = this.titleList[_index1].cover
         if(this.titleList[_index1].children[_index2].children.length !== 0){
-          this.navFour = this.titleList[_index1].children[_index2].children[0].name
+          this.navFour = this.titleList[_index1].children[_index2].children[0].english_name
         }
         this.sideList = this.titleList[_index1].children.map((item)=>{
           return {
@@ -186,21 +186,21 @@ export default {
         this.sideList[_index2].isSelect = true
         if(this.sideList[_index2].children.length === 0){
           try {
-            const {data:{content}} = await getArticle({
+            const {data:{english_content}} = await getArticle({
               id:this.sideList[_index2].article_id
             })
-            this.content = content
-            this.articleTitle = this.sideList[_index2].name
+            this.content = english_content
+            this.articleTitle = this.sideList[_index2].english_name
           } catch (error) {
             console.log(error)
           }
         }else{
           try {
-            const {data:{content}} = await getArticle({
+            const {data:{english_content}} = await getArticle({
               id:this.sideList[_index2].children[0].article_id
             })
-            this.content = content
-            this.articleTitle = this.sideList[_index2].children[0].name
+            this.content = english_content
+            this.articleTitle = this.sideList[_index2].children[0].english_name
           } catch (error) {
             console.log(error)
           }
@@ -209,13 +209,13 @@ export default {
         let _index = this.titleList.findIndex((item)=>{
           return item.id === Number(this.$route.query.parentId)
         })
-        this.navFirst = "首页"
+        this.navFirst = "Home"
         this.navSecond = this.titleList[_index].name
-        this.navThird = this.titleList[_index].children[0].name
+        this.navThird = this.titleList[_index].children[0].english_name
         console.log(this.titleList[_index])
         this.poster = this.titleList[_index].cover
         if(this.titleList[_index].children[0].children.length !== 0){
-          this.navFour = this.titleList[_index].children[0].children[0].name
+          this.navFour = this.titleList[_index].children[0].children[0].english_name
         }
         this.sideList = this.titleList[_index].children.map((item)=>{
           return {
@@ -226,21 +226,21 @@ export default {
         this.sideList[0].isSelect = true
         if(this.sideList[0].children.length === 0){
           try {
-            const {data:{content}} = await getArticle({
+            const {data:{english_content}} = await getArticle({
               id:this.sideList[0].article_id
             })
-            this.content = content
-            this.articleTitle = this.sideList[0].name
+            this.content = english_content
+            this.articleTitle = this.sideList[0].english_name
           } catch (error) {
             console.log(error)
           }
         }else{
           try {
-            const {data:{content}} = await getArticle({
+            const {data:{english_content}} = await getArticle({
               id:this.sideList[0].children[0].article_id
             })
-            this.content = content
-            this.articleTitle = this.sideList[0].children[0].name
+            this.content = english_content
+            this.articleTitle = this.sideList[0].children[0].english_name
           } catch (error) {
             console.log(error)
           }
@@ -250,20 +250,20 @@ export default {
     handleClickNav(data){
       if(data.name === '首页'){
         this.$router.push({
-          name: 'home'
+          name: 'home_en'
         })
       }else if(data.children.length === 0){
         return
       }else{
         this.$router.push({
-          name:'detail',
+          name:'detail_en',
           query:{parentId:data.id,id:null}
         })
       }
     },
     handleClickNavChildren(data){
       this.$router.push({
-        name:'detail',
+        name:'detail_en',
         query:{parentId:data.parent_id,id:data.id}
       })
     },
@@ -303,7 +303,7 @@ export default {
     },
     handleJump(){
       this.$router.push({
-        name:'detail',
+        name:'detail_en',
         query:{parentId:this.popTitle.parent_id,id:this.popTitle.id}
       })
     },
@@ -317,12 +317,12 @@ export default {
       });
       if(this.sideList[index].children.length === 0){
         try {
-          const {data:{content}} = await getArticle({
+          const {data:{english_content}} = await getArticle({
             id:this.sideList[index].article_id
           })
-          this.content = content
-          this.navThird = this.sideList[index].name
-          this.articleTitle = this.sideList[index].name
+          this.content = english_content
+          this.navThird = this.sideList[index].english_name
+          this.articleTitle = this.sideList[index].english_name
           this.navFour = ''
         } catch (error) {
           console.log(error)
@@ -331,13 +331,13 @@ export default {
     },
     async handleFolderChildren(data,index){
       try {
-        const {data:{content}} = await getArticle({
+        const {data:{english_content}} = await getArticle({
           id:data.article_id
         })
-        this.content = content
-        this.navThird = this.sideList[index].name
-        this.navFour = data.name
-        this.articleTitle = data.name
+        this.content = english_content
+        this.navThird = this.sideList[index].english_name
+        this.navFour = data.english_name
+        this.articleTitle = data.english_name
       } catch (error) {
         console.log(error)
       }
