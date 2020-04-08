@@ -675,6 +675,19 @@ export default {
   /deep/img{
     width:100%;
   }
+  /deep/p{
+    font-size:0.1rem;
+    line-height: 1.5;
+  }
+  /deep/.ql-size-small{
+    font-size:0.075rem;
+  }
+  /deep/.ql-size-large{
+    font-size:0.15rem;
+  }
+  /deep/.ql-size-huge{
+    font-size:0.25rem;
+  }
 }
 .principle__text:last-child{
   border-right: none;
