@@ -13,8 +13,8 @@
         </swiper>
       </client-only>
       <div class="lang">
-        <div class="lang_ch">中文</div>
-        <div class="lang_en">English</div>
+        <div class="lang_ch" @click="handleChangeLang(1)">中文</div>
+        <div class="lang_en" @click="handleChangeLang(2)">English</div>
       </div>
       <div class=nav>
         <div class="nav-left">
@@ -158,6 +158,22 @@ export default {
     }
   },
   methods: {
+    handleChangeLang(type){
+      switch(type){
+        case 1:
+          this.$router.push({
+            name:'home',
+          })
+          break
+        case 2:
+          this.$router.push({
+            name:'home_en',
+          })
+          break
+        default:
+          break
+      }
+    },
     async init(){
       this.navFirst = ''
       this.navSecond = ''

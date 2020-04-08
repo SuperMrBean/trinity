@@ -156,12 +156,20 @@ export default {
   },
   methods: {
     handleChangeLang(type){
-      let url = window.location.pathname
-      console.log(url)
-      // switch(type){
-      //   case 1:
-      //     url.replace()
-      // }
+      switch(type){
+        case 1:
+          this.$router.push({
+            name:'home',
+          })
+          break
+        case 2:
+          this.$router.push({
+            name:'home_en',
+          })
+          break
+        default:
+          break
+      }
     },
     handleClickNav(data){
       if(data.name === '首页'){
