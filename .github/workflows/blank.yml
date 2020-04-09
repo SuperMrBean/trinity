@@ -23,10 +23,10 @@ jobs:
           yarn generate
         env:
           CI: true
-          
+
       - name: deploy
-            run: |
-              echo this step is deploy
+        run: |
+          echo this step is deploy
 
       # Deploy
       # - name: Deploy
