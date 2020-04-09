@@ -5,14 +5,14 @@ on:
     branches:
       - master
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       # 切换分支
       - name: Checkout
         uses: actions/checkout@master
       # 使用 node:12
-      - name: node version 12
+      - name: use node version 12
         uses: actions/setup-node@v1
         with:
           node-version: 12
@@ -23,6 +23,12 @@ jobs:
           yarn generate
         env:
           CI: true
+  deploy:
+    steps:
+      - name: deploy
+        run: |
+          echo this step is deploy
+
       # Deploy
       # - name: Deploy
       #   uses: easingthemes/ssh-deploy@v2.0.7
