@@ -73,7 +73,7 @@
         </div>
         <div class="introduction-main-right">
           <div class="introduction-main-right__text">Ms. Whelen是圣心国际幼稚园的创校校长。她有30多年国际教育的经验，是华南最知名的国际教育者之一。在担任广州裕达隆国际学校校长（2007-2014）和爱莎国际学校创校校长(2014-2017)之前，她是伦敦国际学校校长(2001-2005)和乌干达Kabira国际学校校长(2005-2007)。</div>
-          <div class="introduction-main-right__btn">更多 ></div>
+          <!-- <div class="introduction-main-right__btn">更多 ></div> -->
         </div>
       </div>
     </div>

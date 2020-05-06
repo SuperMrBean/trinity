@@ -73,7 +73,7 @@
         </div>
         <div class="introduction-main-right">
           <div class="introduction-main-right__text">Ms Whelen is the founding Director of Trinity International Kindergarten. With more than 30 years' experience in international education, Ms. Whelen is one of South China's best-known international educators. She was Head of the International School of London (2001-2005) and Kabira International School in Uganda (2005-2007) before becoming Head of Utahloy International School Guangzhou (2007-14) and Founding Head of ISA International School Guangzhou (2014-2017).</div>
-          <div class="introduction-main-right__btn">More ></div>
+          <!-- <div class="introduction-main-right__btn">More ></div> -->
         </div>
       </div>
     </div>
