@@ -1,0 +1,40 @@
+# main.yml
+name: trinity ci
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 切换分支
+      - name: Checkout
+        uses: actions/checkout@master
+      # 使用 node:12
+      - name: use node version 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      # npm install
+      - name: build
+        run: |
+          yarn install
+          yarn generate
+        env:
+          CI: true
+
+      - name: deploy
+        run: |
+          echo this step is deploy
+
+      # Deploy
+      # - name: Deploy
+      #   uses: easingthemes/ssh-deploy@v2.0.7
+      #   env:
+      #     SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
+      #     ARGS: "-avz --delete"
+      #     SOURCE: "[Current File Dir]"
+      #     REMOTE_HOST: "[Domain]"
+      #     REMOTE_USER: "[UserName]"
+      #     TARGET: "[Server Dir]"
