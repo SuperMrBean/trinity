@@ -8,7 +8,7 @@
           :options="swiperOptions"
         >
           <swiper-slide>
-            <img :src="`http://www.boatng.cn:7002${poster}`" class="swiper-img" alt="">
+            <img :src="`${baseUrl}${poster}`" class="swiper-img" alt="">
           </swiper-slide>
         </swiper>
       </client-only>
@@ -37,7 +37,7 @@
               <div v-for="(item,index) in popList" :key="index" class="pop-main-lfet__item" @mouseenter="handlePopTitle(item)" @click="handleClickNavChildren(item)">{{item.name}}</div>
             </div>
             <div class="pop-main-mid">
-              <img :src="popImg ? `http://www.boatng.cn:7002${popImg}` : ''" alt="" class="pop-main-mid--img">
+              <img :src="popImg ? `${baseUrl}${popImg}` : ''" alt="" class="pop-main-mid--img">
             </div>
             <div class="pop-main-right" @click="handleJump">
               <div class="pop-main-right--title">{{popTitle.name}}</div>
@@ -107,6 +107,7 @@ import toggle from '@/assets/js/toggle.js'
 export default {
   data () {
     return {
+      baseUrl:'http://api.trinitygz.com',
       swiperOptions: {
         loop: true,
         slidesPerView: 'auto',
@@ -189,7 +190,6 @@ export default {
         this.navFirst = "首页"
         this.navSecond = this.titleList[_index1].name
         this.navThird = this.titleList[_index1].children[_index2].name
-        this.poster = this.titleList[_index1].cover
         if(this.titleList[_index1].children[_index2].children.length !== 0){
           this.navFour = this.titleList[_index1].children[_index2].children[0].name
         }
@@ -202,20 +202,22 @@ export default {
         this.sideList[_index2].isSelect = true
         if(this.sideList[_index2].children.length === 0){
           try {
-            const {data:{content}} = await getArticle({
+            const {data:{content,cover_path}} = await getArticle({
               id:this.sideList[_index2].article_id
             })
             this.content = content
+            this.poster = cover_path
             this.articleTitle = this.sideList[_index2].name
           } catch (error) {
             console.log(error)
           }
         }else{
           try {
-            const {data:{content}} = await getArticle({
+            const {data:{content,cover_path}} = await getArticle({
               id:this.sideList[_index2].children[0].article_id
             })
             this.content = content
+            this.poster = cover_path
             this.articleTitle = this.sideList[_index2].children[0].name
           } catch (error) {
             console.log(error)
@@ -228,8 +230,6 @@ export default {
         this.navFirst = "首页"
         this.navSecond = this.titleList[_index].name
         this.navThird = this.titleList[_index].children[0].name
-        console.log(this.titleList[_index])
-        this.poster = this.titleList[_index].cover
         if(this.titleList[_index].children[0].children.length !== 0){
           this.navFour = this.titleList[_index].children[0].children[0].name
         }
@@ -242,20 +242,22 @@ export default {
         this.sideList[0].isSelect = true
         if(this.sideList[0].children.length === 0){
           try {
-            const {data:{content}} = await getArticle({
+            const {data:{content,cover_path}} = await getArticle({
               id:this.sideList[0].article_id
             })
             this.content = content
+            this.poster = cover_path
             this.articleTitle = this.sideList[0].name
           } catch (error) {
             console.log(error)
           }
         }else{
           try {
-            const {data:{content}} = await getArticle({
+            const {data:{content,cover_path}} = await getArticle({
               id:this.sideList[0].children[0].article_id
             })
             this.content = content
+            this.poster = cover_path
             this.articleTitle = this.sideList[0].children[0].name
           } catch (error) {
             console.log(error)
@@ -333,12 +335,13 @@ export default {
       });
       if(this.sideList[index].children.length === 0){
         try {
-          const {data:{content}} = await getArticle({
+          const {data:{content,cover_path}} = await getArticle({
             id:this.sideList[index].article_id
           })
           this.content = content
           this.navThird = this.sideList[index].name
           this.articleTitle = this.sideList[index].name
+          this.poster = cover_path
           this.navFour = ''
         } catch (error) {
           console.log(error)
@@ -347,13 +350,14 @@ export default {
     },
     async handleFolderChildren(data,index){
       try {
-        const {data:{content}} = await getArticle({
+        const {data:{content,cover_path}} = await getArticle({
           id:data.article_id
         })
         this.content = content
         this.navThird = this.sideList[index].name
         this.navFour = data.name
         this.articleTitle = data.name
+        this.poster = cover_path
       } catch (error) {
         console.log(error)
       }
