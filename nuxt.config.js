@@ -58,15 +58,15 @@ export default {
     proxy: true
   },
   // 设置代理
-  proxy: {
-    '/web': {
-      target: 'http://www.boatng.cn:7002/',
-      changeOrigin: true,
-      pathRewrite: {
-        '^/api': '/'
-      }
-    }
-  },
+  // proxy: {
+  //   '/web': {
+  //     target: 'http://www.boatng.cn:7002/',
+  //     changeOrigin: true,
+  //     pathRewrite: {
+  //       '^/api': '/'
+  //     }
+  //   }
+  // },
   /*
   ** Build configuration
   */
