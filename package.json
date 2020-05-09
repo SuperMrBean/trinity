@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "cross-env MODE=development nuxt",
     "build": "cross-env MODE=production nuxt build",
+    "staging": "cross-env MODE=staging nuxt build",
+    "prod": "cross-env MODE=prod nuxt build",
     "start": "cross-env MODE=production nuxt start",
     "generate": "cross-env MODE=production nuxt generate"
   },

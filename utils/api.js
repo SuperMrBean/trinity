@@ -9,14 +9,14 @@ function getStatic(params) {
 }
 function getTitle(params) {
   return http({
-    url: `${baseUrl}/api/v1/title`,
+    url: `http://www.boatng.cn:7002/api/v1/title`,
     method: 'get',
     params
   })
 }
 function getArticle(params) {
   return http({
-    url: `${baseUrl}/api/v1/article/${params.id}`,
+    url: `http://www.boatng.cn:7002/api/v1/article/${params.id}`,
     method: 'get'
   })
 }

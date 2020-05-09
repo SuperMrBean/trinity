@@ -107,7 +107,7 @@ import toggle from '@/assets/js/toggle.js'
 export default {
   data () {
     return {
-      baseUrl:'http://api.trinitygz.com',
+      baseUrl:process.env.baseUrl,
       swiperOptions: {
         loop: true,
         slidesPerView: 'auto',
