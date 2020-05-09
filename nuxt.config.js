@@ -60,7 +60,7 @@ export default {
   // 设置代理
   proxy: {
     '/web': {
-      target: 'http://api.trinitygz.com/',
+      target: 'http://www.boatng.cn:7002/',
       changeOrigin: true,
       pathRewrite: {
         '^/api': '/'
