@@ -21,7 +21,8 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }
     ],
     script:[
-      {src:'/js/flexible.js',type:'text/javascript',charset:'utf-8'}
+      {src:'/js/flexible.js',type:'text/javascript',charset:'utf-8'},
+      {src:'http://api.trinitygz.com/public/js/rewrite.js',type:'text/javascript',charset:'utf-8'}
     ]
   },
   /*
