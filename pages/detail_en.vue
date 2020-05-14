@@ -40,7 +40,7 @@
               <img :src="popImg ? `${baseUrl}${popImg}` : ''" alt="" class="pop-main-mid--img">
             </div>
             <div class="pop-main-right" @click="handleJump">
-              <div class="pop-main-right--title">{{popTitle.name}}</div>
+              <div class="pop-main-right--title">{{popTitle.english_name}}</div>
               <div class="pop-main-right--icon"></div>
             </div>
           </div>
@@ -228,7 +228,7 @@ export default {
           return item.id === Number(this.$route.query.parentId)
         })
         this.navFirst = "Home"
-        this.navSecond = this.titleList[_index].name
+        this.navSecond = this.titleList[_index].english_name
         this.navThird = this.titleList[_index].children[0].english_name
         console.log(this.titleList[_index])
         if(this.titleList[_index].children[0].children.length !== 0){
