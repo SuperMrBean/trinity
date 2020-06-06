@@ -71,8 +71,8 @@
             <span class="introduction2-main-left__name--text2">Director of Education</span>
           </div>
         </div>
-        <div class="introduction-main-right">
-          <div class="introduction-main-right__text">The Director of Education for the Trinity Group, Alison Cook is an early years and primary expert, as well as a Council of British International Schools (COBIS) Accreditor and IEYC (Fieldwork) Curriculum Trainer. Over her twenty-five years of experience in education she has worked in the UK, Turkey, Azerbaijan and Malaysia in a variety of educational roles including Principal, Educational Consultant, Inspector and Teacher Trainer.</div>
+        <div class="introduction2-main-right">
+          <div class="introduction2-main-right__text">The Director of Education for the Trinity Group, Alison Cook is an early years and primary expert, as well as a Council of British International Schools (COBIS) Accreditor and IEYC (Fieldwork) Curriculum Trainer. Over her twenty-five years of experience in education she has worked in the UK, Turkey, Azerbaijan and Malaysia in a variety of educational roles including Principal, Educational Consultant, Inspector and Teacher Trainer.</div>
           <!-- <div class="introduction-main-right__btn">More ></div> -->
         </div>
       </div>
