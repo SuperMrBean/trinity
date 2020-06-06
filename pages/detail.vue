@@ -612,6 +612,7 @@ export default {
 .article-nav-item--title{
   padding:14px 0;
   border-bottom:1px solid #b8881c;
+  display: flex;
 }
 .article-nav-item--title__icon{
   display: inline-block;
@@ -621,6 +622,8 @@ export default {
   background-size:100% 100%;
   vertical-align: top;
   margin-top:5px;
+  margin-right:4px;
+    flex-shrink: 0;
 }
 .article-nav-item--title__icon2{
   display: inline-block;
@@ -631,6 +634,7 @@ export default {
   vertical-align: top;
   margin-top:6px;
   margin-right: 6px;
+  flex-shrink: 12px;
 }
 .article-nav-item--title__text{
   font-size:16px;
@@ -680,7 +684,7 @@ export default {
     width:100%;
   }
   /deep/p{
-    font-size:0.1rem;
+    font-size:0.12rem;
     line-height: 1.5;
   }
   /deep/.ql-size-small{

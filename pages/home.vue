@@ -66,7 +66,7 @@
         <div class="introduction-main-left">
           <div class="introduction-main-left__img"></div>
           <div class="introduction-main-left__name">
-            <span class="introduction-main-left__name--text1">Elaine Whelen</span>
+            <span class="introduction-main-left__name--text1">Alison Cook</span>
             <br>
             <span class="introduction-main-left__name--text2">Director of Education</span>
           </div>

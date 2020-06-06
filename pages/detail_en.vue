@@ -40,7 +40,7 @@
               <img :src="popImg ? `${baseUrl}${popImg}` : ''" alt="" class="pop-main-mid--img">
             </div>
             <div class="pop-main-right" @click="handleJump">
-              <div class="pop-main-right--title">{{popTitle.name}}</div>
+              <div class="pop-main-right--title">{{popTitle.english_name}}</div>
               <div class="pop-main-right--icon"></div>
             </div>
           </div>
@@ -228,7 +228,7 @@ export default {
           return item.id === Number(this.$route.query.parentId)
         })
         this.navFirst = "Home"
-        this.navSecond = this.titleList[_index].name
+        this.navSecond = this.titleList[_index].english_name
         this.navThird = this.titleList[_index].children[0].english_name
         console.log(this.titleList[_index])
         if(this.titleList[_index].children[0].children.length !== 0){
@@ -613,6 +613,7 @@ export default {
 .article-nav-item--title{
   padding:14px 0;
   border-bottom:1px solid #b8881c;
+  display: flex;
 }
 .article-nav-item--title__icon{
   display: inline-block;
@@ -622,6 +623,8 @@ export default {
   background-size:100% 100%;
   vertical-align: top;
   margin-top:5px;
+  margin-right:4px;
+  flex-shrink: 0;
 }
 .article-nav-item--title__icon2{
   display: inline-block;
@@ -631,7 +634,8 @@ export default {
   border-radius: 6px;
   vertical-align: top;
   margin-top:6px;
-  margin-right: 6px;
+  margin-right: 12px;
+  flex-shrink: 0;
 }
 .article-nav-item--title__text{
   font-size:16px;
@@ -681,7 +685,7 @@ export default {
     width:100%;
   }
   /deep/p{
-    font-size:0.1rem;
+    font-size:0.12rem;
     line-height: 1.5;
   }
   /deep/.ql-size-small{

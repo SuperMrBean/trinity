@@ -61,14 +61,14 @@
         <div class="video-item__icon" @click="handleShowPlayer(item)"></div>
       </div>
     </div>
-    <div class="introduction">
-      <div class="introduction-main">
-        <div class="introduction-main-left">
-          <div class="introduction-main-left__img"></div>
-          <div class="introduction-main-left__name">
-            <span class="introduction-main-left__name--text1">Elaine Whelen</span>
+    <div class="introduction2">
+      <div class="introduction2-main">
+        <div class="introduction2-main-left">
+          <div class="introduction2-main-left__img"></div>
+          <div class="introduction2-main-left__name">
+            <span class="introduction2-main-left__name--text1">Alison Cook</span>
             <br>
-            <span class="introduction-main-left__name--text2">Director of Education</span>
+            <span class="introduction2-main-left__name--text2">Director of Education</span>
           </div>
         </div>
         <div class="introduction-main-right">
@@ -520,51 +520,51 @@ export default {
   top:100px;
   cursor: pointer;
 }
-.introduction{
+.introduction2{
   width:100%;
   height:470px;
   background:#16305f;
   display: flex;
   justify-content: center;
 }
-.introduction-main{
+.introduction2-main{
   width:61%;
   height:410px;
   background:url('~assets/images/square.png');
   background-size:100% 100%;
   margin-top:50px;
 }
-.introduction-main-left{
+.introduction2-main-left{
   display: inline-block;
   margin-top:68px;
   margin-left:63px;
   width:180px;
 }
-.introduction-main-left__img{
+.introduction2-main-left__img{
   width:180px;
   height:180px;
   background:url('~assets/images/director.png');
   background-size:100% 100%;
   // border-radius: 100%;
 }
-.introduction-main-left__name{
+.introduction2-main-left__name{
   text-align: center;
 }
-.introduction-main-left__name--text1{
+.introduction2-main-left__name--text1{
   display: inline-block;
   margin-top:24px;
   color:#fff;
   font-size:18px;
   font-weight: 800;
 }
-.introduction-main-left__name--text2{
+.introduction2-main-left__name--text2{
   display: inline-block;
   margin-top:10px;
   color:#fff;
   font-size:12px;
   font-weight: 800;
 }
-.introduction-main-right{
+.introduction2-main-right{
   display: inline-block;
   width:400px;
   height:210px;
@@ -575,13 +575,13 @@ export default {
   border-top:1px solid #dcbb71;
 
 }
-.introduction-main-right__text{
+.introduction2-main-right__text{
   font-size:14px;
   color:#fff;
   line-height: 21px;
   text-align: justify;
 }
-.introduction-main-right__btn{
+.introduction2-main-right__btn{
   display: inline-block;
   font-size:16px;
   padding:4px 18px;
