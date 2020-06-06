@@ -72,18 +72,12 @@
           </div>
         </div>
         <div class="introduction-main-right">
-          <div class="introduction-main-right__text">Ms Whelen is the founding Director of Trinity International Kindergarten. With more than 30 years' experience in international education, Ms. Whelen is one of South China's best-known international educators. She was Head of the International School of London (2001-2005) and Kabira International School in Uganda (2005-2007) before becoming Head of Utahloy International School Guangzhou (2007-14) and Founding Head of ISA International School Guangzhou (2014-2017).</div>
+          <div class="introduction-main-right__text">The Director of Education for the Trinity Group, Alison Cook is an early years and primary expert, as well as a Council of British International Schools (COBIS) Accreditor and IEYC (Fieldwork) Curriculum Trainer. Over her twenty-five years of experience in education she has worked in the UK, Turkey, Azerbaijan and Malaysia in a variety of educational roles including Principal, Educational Consultant, Inspector and Teacher Trainer.</div>
           <!-- <div class="introduction-main-right__btn">More ></div> -->
         </div>
       </div>
     </div>
     <div class="footer">
-      <div class="footer-item1">
-        <div>No. 663 Hua Cheng Da Dao,Zhu Jiang New Town, TIanhe District, Guangzhou</div>
-        <div class="footer-item1__text">T / +86(20)8558 3287</div>
-        <div>E / www.trinitygz.com</div>
-      </div>
-      <div class="footer-item2"></div>
       <div class="footer-item3">
         <div class="footer-item3--code"></div>
         <span class="footer-item3--text">Scan our QR code</span>
@@ -199,8 +193,8 @@ export default {
         this.isShowPop = false
         return 
       }
-      this.popList = data.children
-      this.popTitle = data.children[0]
+      this.popList = data.children.filter(item=>!item.is_deleted)
+      this.popTitle = this.popList[0]
       this.popImg = data.thumb_image
       if(flag){
         this.isShowPop = flag
@@ -549,9 +543,9 @@ export default {
 .introduction-main-left__img{
   width:180px;
   height:180px;
-  background:url('~assets/images/director.jpg');
+  background:url('~assets/images/director.png');
   background-size:100% 100%;
-  border-radius: 100%;
+  // border-radius: 100%;
 }
 .introduction-main-left__name{
   text-align: center;
@@ -632,6 +626,7 @@ export default {
   height:150px;
   background:url('~assets/images/qrcode.png') 0 0 no-repeat;
   background-size:100% 100%;
+  margin:0 auto;
   margin-bottom:20px;
 }
 .footer-item3--text{

@@ -63,7 +63,7 @@
               <span class="article-nav-item--title__text" :class="{'select':item.isSelect}">{{item.english_name}}</span>
             </div>
             <div v-if="item.children.length !== 0">
-              <toggle v-for="(children,indexChildren) in item.children" :key="indexChildren">
+              <toggle v-for="(children,indexChildren) in item.children.filter(item=>!item.is_deleted)" :key="indexChildren">
                 <div class="article-nav-item--children" @click="handleFolderChildren(children,index)" v-show="item.isSelect">
                   <div class="article-nav-item--children__text">{{children.english_name}}</div>
                 </div>
@@ -193,7 +193,7 @@ export default {
         if(this.titleList[_index1].children[_index2].children.length !== 0){
           this.navFour = this.titleList[_index1].children[_index2].children[0].english_name
         }
-        this.sideList = this.titleList[_index1].children.map((item)=>{
+        this.sideList = this.titleList[_index1].children.filter(item=>!item.is_deleted).map((item)=>{
           return {
             ...item,
             isSelect:false
@@ -234,7 +234,7 @@ export default {
         if(this.titleList[_index].children[0].children.length !== 0){
           this.navFour = this.titleList[_index].children[0].children[0].english_name
         }
-        this.sideList = this.titleList[_index].children.map((item)=>{
+        this.sideList = this.titleList[_index].children.filter(item=>!item.is_deleted).map((item)=>{
           return {
             ...item,
             isSelect:false
@@ -294,8 +294,8 @@ export default {
         this.isShowPop = false
         return 
       }
-      this.popList = data.children
-      this.popTitle = data.children[0]
+      this.popList = data.children.filter(item=>!item.is_deleted)
+      this.popTitle = this.popList[0]
       this.popImg = data.thumb_image
       if(flag){
         this.isShowPop = flag

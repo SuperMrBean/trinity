@@ -72,18 +72,12 @@
           </div>
         </div>
         <div class="introduction-main-right">
-          <div class="introduction-main-right__text">Ms. Whelen是圣心国际幼稚园的创校校长。她有30多年国际教育的经验，是华南最知名的国际教育者之一。在担任广州裕达隆国际学校校长（2007-2014）和爱莎国际学校创校校长(2014-2017)之前，她是伦敦国际学校校长(2001-2005)和乌干达Kabira国际学校校长(2005-2007)。</div>
+          <div class="introduction-main-right__text">作为圣心教育集团的教育总监，Alison Cook 女士是资深幼儿教育专家，英国国际学校理事会(COBIS）同行认证人，IEYC(Fieldwork) 官方培训师。在过去25 年，她曾在英国、土耳其、阿塞拜疆和马来西亚，担任过各种教育职务，包括校长、教育顾问和教师培训师。</div>
           <!-- <div class="introduction-main-right__btn">更多 ></div> -->
         </div>
       </div>
     </div>
     <div class="footer">
-      <div class="footer-item1">
-        <div>广州市天河区珠江新城花城大道663号</div>
-        <div class="footer-item1__text">T / +86(20)8558 3287</div>
-        <div>E / www.trinitygz.com</div>
-      </div>
-      <div class="footer-item2"></div>
       <div class="footer-item3">
         <div class="footer-item3--code"></div>
         <span class="footer-item3--text">扫描二维码</span>
@@ -199,8 +193,8 @@ export default {
         this.isShowPop = false
         return 
       }
-      this.popList = data.children
-      this.popTitle = data.children[0]
+      this.popList = data.children.filter(item=>!item.is_deleted)
+      this.popTitle = this.popList[0]
       this.popImg = data.thumb_image
       if(flag){
         this.isShowPop = flag
@@ -549,9 +543,9 @@ export default {
 .introduction-main-left__img{
   width:180px;
   height:180px;
-  background:url('~assets/images/director.jpg');
+  background:url('~assets/images/director.png');
   background-size:100% 100%;
-  border-radius: 100%;
+  // border-radius: 100%;
 }
 .introduction-main-left__name{
   text-align: center;
@@ -633,6 +627,7 @@ export default {
   background:url('~assets/images/qrcode.png') 0 0 no-repeat;
   background-size:100% 100%;
   margin-bottom:20px;
+  margin:0 auto;
 }
 .footer-item3--text{
   font-size:14px;
