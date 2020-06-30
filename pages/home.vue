@@ -173,17 +173,31 @@ export default {
       }else if(data.children.length === 0){
         return
       }else{
-        this.$router.push({
-          name:'detail',
-          query:{parentId:data.id,id:null}
-        })
+        if(data.children[0].children.length === 0){
+          this.$router.push({
+            name:'detail',
+            query:{parentId:data.id,id:data.children[0].id,articleId:data.children[0].article_id,title:data.children[0].name}
+          })
+        }else{
+          this.$router.push({
+            name:'detail',
+            query:{parentId:data.id,id:data.children[0].id,articleId:data.children[0].children[0].article_id,title:data.children[0].children[0].name}
+          })
+        }
       }
     },
     handleClickNavChildren(data){
-      this.$router.push({
-        name:'detail',
-        query:{parentId:data.parent_id,id:data.id}
-      })
+      if(data.children.length === 0){
+        this.$router.push({
+          name:'detail',
+          query:{parentId:data.parent_id,id:data.id,articleId:data.article_id,title:data.name}
+        })
+      }else{
+        this.$router.push({
+          name:'detail',
+          query:{parentId:data.parent_id,id:data.id,articleId:data.children[0].article_id,title:data.children[0].name}
+        })
+      }
     },
     handleShowPop(flag,data){
       if(this.timeout){

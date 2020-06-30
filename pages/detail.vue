@@ -154,7 +154,7 @@ export default {
     }
   },
   watch: {
-    $route(){
+    $route(newData,oldData){
       this.init()
     }
   },
@@ -180,6 +180,7 @@ export default {
       this.navSecond = ''
       this.navThird = ''
       this.navFour = ''
+      this.content = ''
       if(this.$route.query.id){
         let _index1 = this.titleList.findIndex((item)=>{
           return item.id === Number(this.$route.query.parentId)
@@ -191,7 +192,10 @@ export default {
         this.navSecond = this.titleList[_index1].name
         this.navThird = this.titleList[_index1].children[_index2].name
         if(this.titleList[_index1].children[_index2].children.length !== 0){
-          this.navFour = this.titleList[_index1].children[_index2].children[0].name
+          this.navFour = this.$route.query.title
+          this.articleTitle = this.$route.query.title
+        }else{
+          this.articleTitle = this.titleList[_index1].children[_index2].name
         }
         this.sideList = this.titleList[_index1].children.filter(item=>!item.is_deleted).map((item)=>{
           return {
@@ -200,68 +204,15 @@ export default {
           }
         })
         this.sideList[_index2].isSelect = true
-        if(this.sideList[_index2].children.length === 0){
-          try {
-            const {data:{content,cover_path}} = await getArticle({
-              id:this.sideList[_index2].article_id
-            })
-            this.content = content
-            this.poster = cover_path
-            this.articleTitle = this.sideList[_index2].name
-          } catch (error) {
-            console.log(error)
-          }
-        }else{
-          try {
-            const {data:{content,cover_path}} = await getArticle({
-              id:this.sideList[_index2].children[0].article_id
-            })
-            this.content = content
-            this.poster = cover_path
-            this.articleTitle = this.sideList[_index2].children[0].name
-          } catch (error) {
-            console.log(error)
-          }
-        }
-      }else{
-        let _index = this.titleList.findIndex((item)=>{
-          return item.id === Number(this.$route.query.parentId)
-        })
-        this.navFirst = "首页"
-        this.navSecond = this.titleList[_index].name
-        this.navThird = this.titleList[_index].children[0].name
-        if(this.titleList[_index].children[0].children.length !== 0){
-          this.navFour = this.titleList[_index].children[0].children[0].name
-        }
-        this.sideList = this.titleList[_index].children.filter(item=>!item.is_deleted).map((item)=>{
-          return {
-            ...item,
-            isSelect:false
-          }
-        })
-        this.sideList[0].isSelect = true
-        if(this.sideList[0].children.length === 0){
-          try {
-            const {data:{content,cover_path}} = await getArticle({
-              id:this.sideList[0].article_id
-            })
-            this.content = content
-            this.poster = cover_path
-            this.articleTitle = this.sideList[0].name
-          } catch (error) {
-            console.log(error)
-          }
-        }else{
-          try {
-            const {data:{content,cover_path}} = await getArticle({
-              id:this.sideList[0].children[0].article_id
-            })
-            this.content = content
-            this.poster = cover_path
-            this.articleTitle = this.sideList[0].children[0].name
-          } catch (error) {
-            console.log(error)
-          }
+        const {articleId,title}=this.$route.query
+        try {
+          const {data:{content,cover_path}} = await getArticle({
+            id:articleId
+          })
+          this.content = content
+          this.poster = cover_path
+        } catch (error) {
+          console.log(error)
         }
       }
     },
@@ -273,17 +224,31 @@ export default {
       }else if(data.children.length === 0){
         return
       }else{
-        this.$router.push({
-          name:'detail',
-          query:{parentId:data.id,id:null}
-        })
+        if(data.children[0].children.length === 0){
+          this.$router.push({
+            name:'detail',
+            query:{parentId:data.id,id:data.children[0].id,articleId:data.children[0].article_id,title:data.children[0].name}
+          })
+        }else{
+          this.$router.push({
+            name:'detail',
+            query:{parentId:data.id,id:data.children[0].id,articleId:data.children[0].children[0].article_id,title:data.children[0].children[0].name}
+          })
+        }
       }
     },
     handleClickNavChildren(data){
-      this.$router.push({
-        name:'detail',
-        query:{parentId:data.parent_id,id:data.id}
-      })
+      if(data.children.length === 0){
+        this.$router.push({
+          name:'detail',
+          query:{parentId:data.parent_id,id:data.id,articleId:data.article_id,title:data.name}
+        })
+      }else{
+        this.$router.push({
+          name:'detail',
+          query:{parentId:data.parent_id,id:data.id,articleId:data.children[0].article_id,title:data.children[0].name}
+        })
+      }
     },
     handleShowPop(flag,data){
       if(this.timeout){
@@ -334,33 +299,19 @@ export default {
         }
       });
       if(this.sideList[index].children.length === 0){
-        try {
-          const {data:{content,cover_path}} = await getArticle({
-            id:this.sideList[index].article_id
-          })
-          this.content = content
-          this.navThird = this.sideList[index].name
-          this.articleTitle = this.sideList[index].name
-          this.poster = cover_path
-          this.navFour = ''
-        } catch (error) {
-          console.log(error)
-        }
+        const {parentId} = this.$route.query
+        this.$router.push({
+          name:'detail',
+          query:{parentId,id:this.sideList[index].id,articleId:this.sideList[index].article_id,title:this.sideList[index].name}
+        })
       }
     },
     async handleFolderChildren(data,index){
-      try {
-        const {data:{content,cover_path}} = await getArticle({
-          id:data.article_id
-        })
-        this.content = content
-        this.navThird = this.sideList[index].name
-        this.navFour = data.name
-        this.articleTitle = data.name
-        this.poster = cover_path
-      } catch (error) {
-        console.log(error)
-      }
+      const {parentId} = this.$route.query
+      this.$router.push({
+        name:'detail',
+        query:{parentId,id:data.parent_id,articleId:data.article_id,title:data.name}
+      })
     }
   },
   mounted(){

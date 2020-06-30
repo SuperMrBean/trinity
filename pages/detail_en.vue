@@ -180,6 +180,7 @@ export default {
       this.navSecond = ''
       this.navThird = ''
       this.navFour = ''
+      this.content = ''
       if(this.$route.query.id){
         let _index1 = this.titleList.findIndex((item)=>{
           return item.id === Number(this.$route.query.parentId)
@@ -187,11 +188,14 @@ export default {
         let _index2 = this.titleList[_index1].children.findIndex((item)=>{
           return item.id === Number(this.$route.query.id)
         })
-        this.navFirst = "Home"
+        this.navFirst = "home"
         this.navSecond = this.titleList[_index1].english_name
         this.navThird = this.titleList[_index1].children[_index2].english_name
         if(this.titleList[_index1].children[_index2].children.length !== 0){
-          this.navFour = this.titleList[_index1].children[_index2].children[0].english_name
+          this.navFour = this.$route.query.title
+          this.articleTitle = this.$route.query.title
+        }else{
+          this.articleTitle = this.titleList[_index1].children[_index2].english_name
         }
         this.sideList = this.titleList[_index1].children.filter(item=>!item.is_deleted).map((item)=>{
           return {
@@ -200,91 +204,51 @@ export default {
           }
         })
         this.sideList[_index2].isSelect = true
-        if(this.sideList[_index2].children.length === 0){
-          try {
-            const {data:{english_content,cover_path}} = await getArticle({
-              id:this.sideList[_index2].article_id
-            })
-            this.content = english_content
-            this.articleTitle = this.sideList[_index2].english_name
-            this.poster = cover_path
-          } catch (error) {
-            console.log(error)
-          }
-        }else{
-          try {
-            const {data:{english_content,cover_path}} = await getArticle({
-              id:this.sideList[_index2].children[0].article_id
-            })
-            this.content = english_content
-            this.articleTitle = this.sideList[_index2].children[0].english_name
-            this.poster = cover_path
-          } catch (error) {
-            console.log(error)
-          }
-        }
-      }else{
-        let _index = this.titleList.findIndex((item)=>{
-          return item.id === Number(this.$route.query.parentId)
-        })
-        this.navFirst = "Home"
-        this.navSecond = this.titleList[_index].english_name
-        this.navThird = this.titleList[_index].children[0].english_name
-        console.log(this.titleList[_index])
-        if(this.titleList[_index].children[0].children.length !== 0){
-          this.navFour = this.titleList[_index].children[0].children[0].english_name
-        }
-        this.sideList = this.titleList[_index].children.filter(item=>!item.is_deleted).map((item)=>{
-          return {
-            ...item,
-            isSelect:false
-          }
-        })
-        this.sideList[0].isSelect = true
-        if(this.sideList[0].children.length === 0){
-          try {
-            const {data:{english_content,cover_path}} = await getArticle({
-              id:this.sideList[0].article_id
-            })
-            this.content = english_content
-            this.articleTitle = this.sideList[0].english_name
-            this.poster = cover_path
-          } catch (error) {
-            console.log(error)
-          }
-        }else{
-          try {
-            const {data:{english_content,cover_path}} = await getArticle({
-              id:this.sideList[0].children[0].article_id
-            })
-            this.content = english_content
-            this.articleTitle = this.sideList[0].children[0].english_name
-            this.poster = cover_path
-          } catch (error) {
-            console.log(error)
-          }
+        const {articleId,title}=this.$route.query
+        try {
+          const {data:{english_content,cover_path}} = await getArticle({
+            id:articleId
+          })
+          this.content = english_content
+          this.poster = cover_path
+        } catch (error) {
+          console.log(error)
         }
       }
     },
     handleClickNav(data){
       if(data.name === '首页'){
         this.$router.push({
-          name: 'home_en'
+          name: 'home'
         })
       }else if(data.children.length === 0){
         return
       }else{
-        this.$router.push({
-          name:'detail_en',
-          query:{parentId:data.id,id:null}
-        })
+        if(data.children[0].children.length === 0){
+          this.$router.push({
+            name:'detail_en',
+            query:{parentId:data.id,id:data.children[0].id,articleId:data.children[0].article_id,title:data.children[0].english_name}
+          })
+        }else{
+          this.$router.push({
+            name:'detail_en',
+            query:{parentId:data.id,id:data.children[0].id,articleId:data.children[0].children[0].article_id,title:data.children[0].children[0].english_name}
+          })
+        }
       }
     },
     handleClickNavChildren(data){
-      this.$router.push({
-        name:'detail_en',
-        query:{parentId:data.parent_id,id:data.id}
-      })
+      if(data.children.length === 0){
+        this.$router.push({
+          name:'detail_en',
+          query:{parentId:data.parent_id,id:data.id,articleId:data.article_id,title:data.english_name}
+        })
+      }else{
+        this.$router.push({
+          name:'detail_en',
+          query:{parentId:data.parent_id,id:data.id,articleId:data.children[0].article_id,title:data.children[0].english_name}
+        })
+      }
     },
     handleShowPop(flag,data){
       if(this.timeout){
