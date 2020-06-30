@@ -78,18 +78,6 @@
       </div>
     </div>
     <div class="footer">
-      <div class="footer-item1">
-        <div>广州圣心国际幼儿园 二沙校区</div>
-        <div class="footer-item1__text">地址：广州市越秀区烟雨路28号南侧一楼及二楼</div>
-      </div>
-      <div class="footer-item1">
-        <div>广州圣心国际幼儿园 珠江校区</div>
-        <div class="footer-item1__text">地址：广州市天河区珠江新城花城大道663号</div>
-      </div>
-      <div class="footer-item1">
-        <div>广州圣心国际幼儿园 花都校区</div>
-        <div class="footer-item1__text">地址：广州市花都区花城街凤凰北路34号之68号</div>
-      </div>
       <div class="footer-item3">
         <div class="footer-item3--code"></div>
         <span class="footer-item3--text">Scan our QR code</span>
@@ -180,7 +168,7 @@ export default {
     handleClickNav(data){
       if(data.name === '首页'){
         this.$router.push({
-          name: 'home'
+          name: 'home_en'
         })
       }else if(data.children.length === 0){
         return
@@ -627,22 +615,12 @@ export default {
   padding:0 100px;
   box-sizing: border-box;
 }
-.footer::after{
-  width:100%;
-  height:340px;
-  position: absolute;
-  content: '';
-  display: block;
-  background:rgba(0,0,0,0.5);
-}
 .footer-item1{
-  position: relative;
-  z-index: 99;
   font-size:14px;
   color:#fff;
   border-top:1px solid #fff;
   border-bottom:1px solid #fff;
-  width:260px;
+  width:280px;
   padding:20px 0;
 }
 .footer-item1__text{
@@ -655,8 +633,6 @@ export default {
   background-size:100% 100%;
 }
 .footer-item3{
-  position: relative;
-  z-index: 99;
   text-align: center;
 }
 .footer-item3--code{
