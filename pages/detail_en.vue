@@ -83,16 +83,16 @@
     </div>
     <div class="footer">
       <div class="footer-item1">
-        <div>广州圣心国际幼儿园 二沙校区</div>
-        <div class="footer-item1__text">地址：广州市越秀区烟雨路28号南侧一楼及二楼</div>
+        <div>Trinity International Kindergarten Guangzhou Ersha Campus</div>
+        <div class="footer-item1__text">Address: 1F&2F No.28 South Block, Yan Yu Road, Yuexiu District, Guangzhou</div>
       </div>
       <div class="footer-item1">
-        <div>广州圣心国际幼儿园 珠江校区</div>
-        <div class="footer-item1__text">地址：广州市天河区珠江新城花城大道663号</div>
+        <div>Trinity International Kindergarten Guangzhou Zhujiang Campus</div>
+        <div class="footer-item1__text">Address: No. 663 Huacheng Avenue, Zhujiang New Town, Tianhe District, Guangzhou</div>
       </div>
       <div class="footer-item1">
-        <div>广州圣心国际幼儿园 花都校区</div>
-        <div class="footer-item1__text">地址：广州市花都区花城街凤凰北路34号之68号</div>
+        <div>Trinity International Kindergarten Guangzhou Huadu Campus</div>
+        <div class="footer-item1__text">Address: No. 68, No. 34, Fenghuang North Road, Huacheng Street, Huadu District, Guangzhou</div>
       </div>
       <div class="footer-item3">
         <div class="footer-item3--code"></div>
@@ -296,7 +296,7 @@ export default {
         query:{parentId:this.popTitle.parent_id,id:this.popTitle.id}
       })
     },
-    async handleFolder(index){
+    handleFolder(index){
       this.sideList.forEach((item,indexValue) => {
         if(index !== indexValue){
           item.isSelect = false
@@ -305,33 +305,19 @@ export default {
         }
       });
       if(this.sideList[index].children.length === 0){
-        try {
-          const {data:{english_content,cover_path}} = await getArticle({
-            id:this.sideList[index].article_id
-          })
-          this.content = english_content
-          this.navThird = this.sideList[index].english_name
-          this.articleTitle = this.sideList[index].english_name
-          this.navFour = ''
-          this.poster = cover_path
-        } catch (error) {
-          console.log(error)
-        }
+        const {parentId} = this.$route.query
+        this.$router.push({
+          name:'detail_en',
+          query:{parentId,id:this.sideList[index].id,articleId:this.sideList[index].article_id,title:this.sideList[index].english_name}
+        })
       }
     },
-    async handleFolderChildren(data,index){
-      try {
-        const {data:{english_content,cover_path}} = await getArticle({
-          id:data.article_id
-        })
-        this.content = english_content
-        this.navThird = this.sideList[index].english_name
-        this.navFour = data.english_name
-        this.articleTitle = data.english_name
-        this.poster = cover_path
-      } catch (error) {
-        console.log(error)
-      }
+    handleFolderChildren(data,index){
+      const {parentId} = this.$route.query
+      this.$router.push({
+        name:'detail_en',
+        query:{parentId,id:data.parent_id,articleId:data.article_id,title:data.english_name}
+      })
     }
   },
   mounted(){

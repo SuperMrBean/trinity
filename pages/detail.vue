@@ -296,7 +296,7 @@ export default {
         query:{parentId:this.popTitle.parent_id,id:this.popTitle.id}
       })
     },
-    async handleFolder(index){
+    handleFolder(index){
       this.sideList.forEach((item,indexValue) => {
         if(index !== indexValue){
           item.isSelect = false
@@ -312,7 +312,7 @@ export default {
         })
       }
     },
-    async handleFolderChildren(data,index){
+    handleFolderChildren(data,index){
       const {parentId} = this.$route.query
       this.$router.push({
         name:'detail',

@@ -79,16 +79,16 @@
     </div>
     <div class="footer">
       <div class="footer-item1">
-        <div>广州圣心国际幼儿园 二沙校区</div>
-        <div class="footer-item1__text">地址：广州市越秀区烟雨路28号南侧一楼及二楼</div>
+        <div>Trinity International Kindergarten Guangzhou Ersha Campus</div>
+        <div class="footer-item1__text">Address: 1F&2F No.28 South Block, Yan Yu Road, Yuexiu District, Guangzhou</div>
       </div>
       <div class="footer-item1">
-        <div>广州圣心国际幼儿园 珠江校区</div>
-        <div class="footer-item1__text">地址：广州市天河区珠江新城花城大道663号</div>
+        <div>Trinity International Kindergarten Guangzhou Zhujiang Campus</div>
+        <div class="footer-item1__text">Address: No. 663 Huacheng Avenue, Zhujiang New Town, Tianhe District, Guangzhou</div>
       </div>
       <div class="footer-item1">
-        <div>广州圣心国际幼儿园 花都校区</div>
-        <div class="footer-item1__text">地址：广州市花都区花城街凤凰北路34号之68号</div>
+        <div>Trinity International Kindergarten Guangzhou Huadu Campus</div>
+        <div class="footer-item1__text">Address: No. 68, No. 34, Fenghuang North Road, Huacheng Street, Huadu District, Guangzhou</div>
       </div>
       <div class="footer-item3">
         <div class="footer-item3--code"></div>
